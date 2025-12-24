@@ -76,23 +76,23 @@ MobNet is the **underworld layer** where alpha tokens become instruments in a ga
 
 A quick guide to the lingo used throughout this README:
 
-- **The Taofather** — Subnet owner / protocol figurehead. Runs the city, sets the tone.  
-- **Boss** — A hit sponsor. Posts jobs by depositing MOB-α and setting terms.  
-- **Mobsters (Miners)** — Hit participants. Provide target alpha to the pool and earn payouts + MOB-α rewards.  
-- **Consiglieres (Validators)** — Scorers/validators. Keep the books, compute impact, decide reward splits.  
-- **Hit** — A single coordinated, batched sell of pooled target alpha into TAO.  
-- **Hit Board / Wall of Jobs** — Public listing of open and completed hits + their impact scores.  
-- **Street Tax** — The upfront, non-refundable burn on the Boss deposit (20% in this spec).  
-- **Escrow / Collateral** — The Boss’s locked MOB-α (70% in this spec) that gets “washed” back 80–100% depending on impact.  
-- **Wash** — The process of returning escrowed MOB-α to the Boss; the “lost” slice is split between wash burn and Taofather fee.  
-- **Washing Fee** — The part of lost escrow that is burned forever (parameter \( \psi \)).  
-- **The Blessing** — The Taofather’s extra cut from lost escrow (the remainder \( 1-\psi \)).  
-- **Family Vault** — Protocol treasury that receives the Boss treasury cut (10%) and other routed flows.  
-- **House TAO** — The destination asset for hit execution proceeds (the “house” holds/settles in TAO).  
-- **House Cut** — The protocol fee \( f \) taken from hit proceeds before base payouts.  
-- **Envelope** — The epoch rewards budget distributed as MOB-α to Mobsters (miners).  
-- **Heat Window** — Timeout period for filling a hit pool; if it ends, the job is refunded or executed at partial size (governance choice).  
-- **Street Price / Tape** — The reference price inputs used for accounting (e.g., \( p_\alpha \), \( P_0 \)); not a guarantee.
+- **The Taofather**: Subnet owner / protocol figurehead. Runs the city, sets the tone.  
+- **Boss**:A hit sponsor. Posts jobs by depositing MOB-α and setting terms.  
+- **Mobsters (Miners)**: Hit participants. Provide target alpha to the pool and earn payouts + MOB-α rewards.  
+- **Consiglieres (Validators)**: Scorers/validators. Keep the books, compute impact, decide reward splits.  
+- **Hit**: A single coordinated, batched sell of pooled target alpha into TAO.  
+- **Hit Board / Wall of Jobs**: Public listing of open and completed hits + their impact scores.  
+- **Street Tax**: The upfront, non-refundable burn on the Boss deposit (20% in this spec).  
+- **Escrow / Collateral**: The Boss’s locked MOB-α (70% in this spec) that gets “washed” back 80–100% depending on impact.  
+- **Wash**: The process of returning escrowed MOB-α to the Boss; the “lost” slice is split between wash burn and Taofather fee.  
+- **Washing Fee**: The part of lost escrow that is burned forever (parameter \( \psi \)).  
+- **The Blessing**: The Taofather’s extra cut from lost escrow (the remainder \( 1-\psi \)).  
+- **Family Vault**: Protocol treasury that receives the Boss treasury cut (10%) and other routed flows.  
+- **House TAO**: The destination asset for hit execution proceeds (the “house” holds/settles in TAO).  
+- **House Cut**: The protocol fee \( f \) taken from hit proceeds before base payouts.  
+- **Envelope**: The epoch rewards budget distributed as MOB-α to Mobsters (miners).  
+- **Heat Window**: Timeout period for filling a hit pool; if it ends, the job is refunded or executed at partial size (governance choice).  
+- **Street Price / Tape**: The reference price inputs used for accounting (e.g., \( p_\alpha \), \( P_0 \)); not a guarantee.
 
 ---
 
@@ -105,9 +105,9 @@ A quick guide to the lingo used throughout this README:
 - **Mobsters (Miners)**  
   The crew. They join hits by depositing the target subnet’s alpha into the pool.  
   They’re scored and paid by Consiglieres based on participation and MOB-α loyalty.  
-  **ANYONE can be a miner (no miner uid or registration required).**
+  **ANYONE can be a miner!**
 
-  In this README, **‘Mobsters (miners)’** means hit participants (not necessarily registered Bittensor miner UIDs). Payouts come from the MobNet payout desk (distributor/treasury), based on validator scoring.
+  In Mobnet **‘Mobsters (miners)’** means hit participants (not necessarily registered Bittensor miner UIDs). Payouts come from the MobNet payout desk (distributor/treasury), based on validator scoring.
 
 - **Consiglieres (Validators)**  
   The accountants with the books. They:
