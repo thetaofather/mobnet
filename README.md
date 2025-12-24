@@ -26,7 +26,7 @@ MOBnet funds MOB-α rewards with a protocol-defined budget (the Envelope), backe
 
 > Over time, Mobsters (miners) usually do slightly better running hits than selling alone.
 
-Important note on MOB-α value: Any TAO-equivalent conversions use a reference price `p_alpha` for accounting and examples. `p_alpha` is not a peg, not a promise, and not a guarantee — it’s a “street price” input that constantly changes.
+Important note on MOB-α value: Any TAO-equivalent conversions use a reference price `p_alpha` for accounting and examples. `p_alpha` is not a peg, not a promise, and not a guarantee; it’s a “street price” input that constantly changes.
 
 ---
 
