@@ -2,7 +2,7 @@
 
 ---
 
-## Abstract
+## Intro
 
 Welcome to MobNet, a mafia-themed Bittensor subnet where volatility is the product and coordination is the hustle.
 
@@ -28,7 +28,7 @@ Important disclosure on MOB-α value: Any TAO-equivalent conversions use a refer
 
 ## Table of Contents
 
-- [Abstract](#abstract)
+- [Intro](#Intro)
 - [High-Level Overview](#high-level-overview)
   - [MobNet Slang (Mini Glossary)](#mobnet-slang-mini-glossary)
   - [Roles](#roles)
