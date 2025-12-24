@@ -2,6 +2,30 @@
 
 ---
 
+## Abstract
+
+MobNet is a mafia-themed Bittensor subnet where volatility is the product and coordination is the hustle.
+
+Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on rival subnets:
+
+- Bosses put a job on the board by locking up MOB-α and paying the *street tax*.
+- Mobsters (Miners) show up with inventory: *the target subnet’s alpha token*, pooled for one clean move.
+- When the pool fills, the system executes a single, all-at-once sell (“the hit”), kicking out a payout pot and a price shock.
+
+Each job gets an impact score  *how hard the street felt it* which determines:
+
+- how much of the Boss’s escrow gets washed and returned vs what gets burned,
+- how much MOB-α and TAO payout each Mobster (miner) earns,
+- and where the job lands on the public Hit Board (the Wall of Jobs).
+
+MobNet funds MOB-α rewards with a protocol-defined epoch budget (the Envelope), backed by fees and treasury flows (and optionally validator-governed conversions of subnet reward inflows into MOB-α). Parameters can be tuned so that:
+
+> Over time, Mobsters (miners) usually do slightly better running hits than selling alone.
+
+Important disclosure on MOB-α value: Any TAO-equivalent conversions use a reference price `p_alpha` for accounting and examples. `p_alpha` is not a peg, not a promise, and not a guarantee — it’s a “street price” input that constantly changes.
+
+---
+
 ## Table of Contents
 
 - [Abstract](#abstract)
@@ -35,30 +59,6 @@
   - [For The Subnet Owner (“The Taofather”)](#for-the-subnet-owner-the-taofather)
   - [For Users (Bosses, Mobsters / Miners, Consiglieres / Validators)](#for-users-bosses-mobsters--miners-consiglieres--validators)
 - [FAQ](#faq)
-
----
-
-## Abstract
-
-MobNet is a mafia-themed Bittensor subnet where volatility is the product and coordination is the hustle.
-
-Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on rival subnets:
-
-- Bosses put a job on the board by locking up MOB-α and paying the *street tax*.
-- Mobsters (Miners) show up with inventory: *the target subnet’s alpha token*, pooled for one clean move.
-- When the pool fills, the system executes a single, all-at-once sell (“the hit”), kicking out a payout pot and a price shock.
-
-Each job gets an impact score  *how hard the street felt it* which determines:
-
-- how much of the Boss’s escrow gets washed and returned vs what gets burned,
-- how much MOB-α and TAO payout each Mobster (miner) earns,
-- and where the job lands on the public Hit Board (the Wall of Jobs).
-
-MobNet funds MOB-α rewards with a protocol-defined epoch budget (the Envelope), backed by fees and treasury flows (and optionally validator-governed conversions of subnet reward inflows into MOB-α). Parameters can be tuned so that:
-
-> Over time, Mobsters (miners) usually do slightly better running hits than selling alone.
-
-Important disclosure on MOB-α value: Any TAO-equivalent conversions use a reference price `p_alpha` for accounting and examples. `p_alpha` is not a peg, not a promise, and not a guarantee — it’s a “street price” input that constantly changes.
 
 ---
 
