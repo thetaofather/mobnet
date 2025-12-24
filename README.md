@@ -77,7 +77,7 @@ MobNet is the **underworld layer** where alpha tokens become instruments in a ga
 A quick guide to the lingo used throughout this README:
 
 - **The Taofather**: Subnet owner / protocol figurehead. Runs the city, sets the tone.  
-- **Boss**:A hit sponsor. Posts jobs by depositing MOB-α and setting terms.  
+- **Boss**: A hit sponsor. Posts jobs by depositing MOB-α and setting terms.  
 - **Mobsters (Miners)**: Hit participants. Provide target alpha to the pool and earn payouts + MOB-α rewards.  
 - **Consiglieres (Validators)**: Scorers/validators. Keep the books, compute impact, decide reward splits.  
 - **Hit**: A single coordinated, batched sell of pooled target alpha into TAO.  
