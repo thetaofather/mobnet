@@ -53,7 +53,7 @@ An **impact score** measures how brutal the hit was and determines:
 - how much **MOB-α and base payout** each Mobster (miner) earns,  
 - and how the hit ranks on a public **Hit Board**.
 
-MobNet dedicates **100% of its miner emissions share** (e.g. the full 41% miner allocation) to **MOB-α rewards for miners (Mobsters)** who participate in hits. Parameters are tuned so that:
+MobNet dedicates **100% of its miner emissions share** (e.g. the full 41% miner allocation) to **MOB-α rewards for Mobsters (miners) ** who participate in hits. Parameters are tuned so that:
 
 > Over time, **Mobsters (miners) usually earn slightly more** by joining hits vs by selling alone.
 
@@ -85,7 +85,7 @@ MobNet is the **underworld layer** where every subnet's alpha token becomes an i
   Validators on MobNet. They:
   - track internal prices and subnet “size” metrics,  
   - compute impact scores for hits,  
-  - score and weight miners (Mobsters),  
+  - score and weight Mobsters (miners),  
   - and drive consensus on how emissions and collateral are allocated.
 
 ### The MOB-α Token (MOBnet's Alpha token)
@@ -94,7 +94,7 @@ MOB-α is the underworld’s currency:
 
 - Bosses **must acquire and deposit MOB-α** to open hits.  
 - A fixed fraction of each deposit is **burned**; another is held as **collateral**.  
-- The subnet’s **miner emissions** are turned into MOB-α rewards for **miners (Mobsters)** who participate in hits. This means there is no need to register a miner UID.
+- The subnet’s **miner emissions** are turned into MOB-α rewards for **Mobsters (miners)** who participate in hits. This means there is no need to register a miner UID.
 
 The more the game is played, the more MOB-α is **burned**, while emissions keep the system **slightly +EV** for active Mobsters (miners).
 
@@ -181,7 +181,7 @@ The hit is then posted on the **Hit Board** as an open contract: target subnet \
 
 ---
 
-### 2. Pool Filling (Mobsters / Miners Join)
+### 2. Pool Filling (Mobsters (Miners) Join)
 
 Mobsters (the subnet’s **miners**) join by depositing the target subnet’s alpha token.
 
@@ -311,7 +311,7 @@ Validators use \( I'_{\text{hit}} \) as the main metric to:
 
 ### Epoch Reward Budget
 
-Assume MobNet receives miner emissions each epoch and dedicates **100% of its miner share** to rewarding its own miners (Mobsters) for hit participation.
+MobNet receives miner emissions each epoch and dedicates **100% of its miner share** to rewarding its own Mobsters (miners) for hit participation.
 
 Let:
 
