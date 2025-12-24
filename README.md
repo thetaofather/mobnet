@@ -42,7 +42,7 @@
 
 MobNet is a mafia-themed Bittensor subnet where volatility is the product and coordination is the hustle.
 
-Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on other subnets:
+Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on rival subnets:
 
 - Bosses put a job on the board by locking up MOB-α and paying the street tax.
 - Mobsters (Miners) show up with inventory: the target subnet’s alpha token, pooled for one clean move.
