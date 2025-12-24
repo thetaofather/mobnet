@@ -1,5 +1,7 @@
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/e128c303-7891-4f68-9683-4d72c89ad4c9" />
-<h1 align="center">The Taofather’s MobNet: Turning dTAO Volatility Into Mafia-Style Hits</h1>
+<h1 align="center">The Taofather’s MobNet: 
+  
+  Turning dTAO Volatility Into Mafia-Style Hits</h1>
 
 ## Intro
 
