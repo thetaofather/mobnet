@@ -48,7 +48,7 @@ Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on r
 - Mobsters (Miners) show up with inventory: the target subnet’s alpha token, pooled for one clean move.
 - When the pool fills, the system executes a single, all-at-once sell (“the hit”), kicking out a payout pot and a price shock.
 
-Each job gets an impact score — how hard the street felt it — which determines:
+Each job gets an impact score  *how hard the street felt it* which determines:
 
 - how much of the Boss’s escrow gets washed and returned vs what gets burned,
 - how much MOB-α and base payout each Mobster earns,
