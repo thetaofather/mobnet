@@ -1,5 +1,5 @@
-<p align="center"> # The Taofather’s MobNet: Turning dTAO Volatility Into Mafia-Style Hits
-</p>
+# The Taofather’s MobNet: Turning dTAO Volatility Into Mafia-Style Hits
+
 ---
 
 ## Table of Contents
