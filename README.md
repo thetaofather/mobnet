@@ -1,6 +1,6 @@
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/e128c303-7891-4f68-9683-4d72c89ad4c9" />
 
-<h1 align="center">The Taofather’s MobNet:   
+<h1 align="center">The Taofather’s MOBnet:   
  
   Turning dTAO Volatility Into Mafia-Style Hits</h1>
 
@@ -8,7 +8,7 @@
 
 ## Intro
 
-Welcome to MobNet, a mafia-themed Bittensor subnet where volatility is the product and coordination is the hustle.
+Welcome to MOBnet, a mafia-themed Bittensor subnet where volatility is the product and coordination is the hustle.
 
 Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on rival subnets:
 
@@ -22,7 +22,7 @@ Each job gets an impact score  *how hard the street felt it* which determines:
 - how much MOB-α and TAO payout each Mobster (miner) earns,
 - and where the job lands on the public Hit Board (the Wall of Jobs).
 
-MobNet funds MOB-α rewards with a protocol-defined budget (the Envelope), backed by fees and treasury flows (and optionally validator-governed conversions of subnet reward inflows into MOB-α). Parameters can be tuned so that:
+MOBnet funds MOB-α rewards with a protocol-defined budget (the Envelope), backed by fees and treasury flows (and optionally validator-governed conversions of subnet reward inflows into MOB-α). Parameters can be tuned so that:
 
 > Over time, Mobsters (miners) usually do slightly better running hits than selling alone.
 
@@ -34,9 +34,9 @@ Important disclosure on MOB-α value: Any TAO-equivalent conversions use a refer
 
 - [Intro](#Intro)
 - [High-Level Overview](#high-level-overview)
-  - [MobNet Slang (Mini Glossary)](#mobnet-slang-mini-glossary)
+  - [MOBnet Slang (Mini Glossary)](#MOBnet-slang-mini-glossary)
   - [Roles](#roles)
-  - [The MOB-α Token](#the-mob-%CE%B1-token-mobnets-alpha-token)
+  - [The MOB-α Token](#the-mob-%CE%B1-token-MOBnets-alpha-token)
 - [Hit Mechanics](#hit-mechanics)
   - [1. Boss Deposit & Hit Creation](#1-boss-deposit--hit-creation)
   - [2. Pool Filling (Mobsters / Miners Join)](#2-pool-filling-mobsters--miners-join)
@@ -68,15 +68,15 @@ Important disclosure on MOB-α value: Any TAO-equivalent conversions use a refer
 
 ## High-Level Overview
 
-MobNet lives in “Tensor City,” a district of Bittensor subnets. Each subnet has:
+MOBnet lives in “Tensor City,” a district of Bittensor subnets. Each subnet has:
 
 - an alpha token (example: alpha_1 for Subnet 1),
 - a reputation,
 - and *if the streets are talking* — a target on its back.
 
-MobNet is the underworld layer where alpha tokens become instruments in a game of timing, coordination, and clout.
+MOBnet is the underworld layer where alpha tokens become instruments in a game of timing, coordination, and clout.
 
-### MobNet Slang (Mini Glossary)
+### MOBnet Slang (Mini Glossary)
 
 - The Taofather — Subnet owner / protocol figurehead. Runs the city, sets the tone.
 - Boss — A hit sponsor. Posts jobs by depositing MOB-α and setting terms.
@@ -107,7 +107,7 @@ MobNet is the underworld layer where alpha tokens become instruments in a game o
   They’re scored and paid by Consiglieres (validators) based on participation and MOB-α loyalty (staked MOB-α).  
   ANYONE can be a miner!
 
-  “Mobsters (miners)” means hit participants (not necessarily registered Bittensor miner UIDs). Payouts come from the MobNet payout desk (distributor/treasury), based on validator scoring.
+  “Mobsters (miners)” means hit participants (not necessarily registered Bittensor miner UIDs). Payouts come from the MOBnet payout desk (distributor/treasury), based on validator scoring.
 
 - Consiglieres (Validators)  
   The accountants with the books. They:
