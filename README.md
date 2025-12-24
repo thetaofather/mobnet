@@ -6,6 +6,7 @@
 
 - [Abstract](#abstract)
 - [High-Level Overview](#high-level-overview)
+  - [MobNet Slang (Mini Glossary)](#mobnet-slang-mini-glossary)
   - [Roles](#roles)
   - [The MOB-α Token](#the-mob-α-token-mobnets-alpha-token)
 - [Hit Mechanics](#hit-mechanics)
@@ -39,77 +40,100 @@
 
 ## Abstract
 
-MobNet is a **mafia-themed** subnet for Bittensor where **volatility is the product**.
+MobNet is a **mafia-themed** Bittensor subnet where **volatility is the product** and coordination is the hustle.
 
-Its native token, **MOB-α** (“Mob Alpha”), funds the organized underworld of **hits** on other subnets:
+Its native token, **MOB-α** (“Mob Alpha”), bankrolls an underworld of **hits** on other subnets:
 
-- **Bosses** open hits by burning and locking MOB-α.  
-- **Mobsters (Miners)** join hits by contributing the **target subnet’s alpha token** into a pooled stack.  
-- When the pool fills, the system executes a **single, all-at-once sell event** (“the hit”), generating a payout pot and a price shock.
+- **Bosses** put a job on the board by locking up MOB-α and paying the street tax.  
+- **Mobsters (Miners)** show up with inventory: the **target subnet’s alpha token**, pooled for one clean move.  
+- When the pool fills, the system executes a **single, all-at-once sell** (“the hit”), kicking out a payout pot and a price shock.
 
-An **impact score** measures how brutal the hit was and determines:
+Each job gets an **impact score**—how hard the street felt it—which determines:
 
-- how much of the Boss’s locked MOB-α is **washed and returned** vs **burned**,  
-- how much **MOB-α and base payout** each Mobster (miner) earns,  
-- and how the hit ranks on a public **Hit Board**.
+- how much of the Boss’s escrow gets **washed and returned** vs what gets **burned**,  
+- how much **MOB-α and base payout** each Mobster earns,  
+- and where the job lands on the public **Hit Board** (the Wall of Jobs).
 
-MobNet dedicates a **protocol-defined rewards budget each epoch** (funded by fees and treasury flows, and optionally by validator-governed conversions of subnet reward inflows into MOB-α) to MOB-α rewards for Mobsters (miners) who participate in hits. Parameters are tuned so that:
+MobNet funds MOB-α rewards with a **protocol-defined epoch budget** (the **Envelope**), backed by fees and treasury flows. Parameters are tuned so that:
 
-> Over time, **Mobsters (miners) usually earn slightly more** by joining hits vs by selling alone.
+> Over time, **Mobsters usually do slightly better** running hits than dumping alone.
 
-**Important disclosure on MOB-α value:** Any TAO-equivalent conversions use a **reference price** \( p_\alpha \) for accounting and examples. \( p_\alpha \) is **not a promised value, peg, or guarantee**—it may be derived from an oracle, TWAP, or market, and can change.
-
-This README describes the MobNet protocol.
+**Important disclosure on MOB-α value:** Any TAO-equivalent conversions use a **reference price** \( p_\alpha \) for accounting and examples. \( p_\alpha \) is **not a peg, not a promise, and not a guarantee**—it’s a “street price” input that can change.
 
 ---
 
 ## High-Level Overview
 
-MobNet operates in a “Tensor City” of Bittensor subnets. Each subnet has:
+MobNet lives in “Tensor City,” a district of Bittensor subnets. Each subnet has:
 
 - an **alpha token** (e.g. \( \alpha_1 \) for Subnet 1),  
 - a **reputation**,  
-- and a potential **target on its back**.
+- and—if the streets are talking—a **target on its back**.
 
-MobNet is the **underworld layer** where every subnet's alpha token becomes an instrument in a game of coordination, timing, and clout.
+MobNet is the **underworld layer** where alpha tokens become instruments in a game of timing, coordination, and clout.
+
+### MobNet Slang (Mini Glossary)
+
+A quick guide to the lingo used throughout this README:
+
+- **The Taofather** — Subnet owner / protocol figurehead. Runs the city, sets the tone.  
+- **Boss** — A hit sponsor. Posts jobs by depositing MOB-α and setting terms.  
+- **Mobsters (Miners)** — Hit participants. Provide target alpha to the pool and earn payouts + MOB-α rewards.  
+- **Consiglieres (Validators)** — Scorers/validators. Keep the books, compute impact, decide reward splits.  
+- **Hit** — A single coordinated, batched sell of pooled target alpha into TAO.  
+- **Hit Board / Wall of Jobs** — Public listing of open and completed hits + their impact scores.  
+- **Street Tax** — The upfront, non-refundable burn on the Boss deposit (20% in this spec).  
+- **Escrow / Collateral** — The Boss’s locked MOB-α (70% in this spec) that gets “washed” back 80–100% depending on impact.  
+- **Wash** — The process of returning escrowed MOB-α to the Boss; the “lost” slice is split between wash burn and Taofather fee.  
+- **Washing Fee** — The part of lost escrow that is burned forever (parameter \( \psi \)).  
+- **The Blessing** — The Taofather’s extra cut from lost escrow (the remainder \( 1-\psi \)).  
+- **Family Vault** — Protocol treasury that receives the Boss treasury cut (10%) and other routed flows.  
+- **House TAO** — The destination asset for hit execution proceeds (the “house” holds/settles in TAO).  
+- **House Cut** — The protocol fee \( f \) taken from hit proceeds before base payouts.  
+- **Envelope** — The epoch rewards budget distributed as MOB-α to Mobsters (miners).  
+- **Heat Window** — Timeout period for filling a hit pool; if it ends, the job is refunded or executed at partial size (governance choice).  
+- **Street Price / Tape** — The reference price inputs used for accounting (e.g., \( p_\alpha \), \( P_0 \)); not a guarantee.
+
+---
 
 ### Roles
 
 - **Bosses (Hit Sponsors)**  
-  Open hits on specific subnets by depositing MOB-α and defining the hit parameters.  
+  Put up MOB-α, name the target, set the terms, and light the fuse.  
   **ANYONE can be a boss.**
 
 - **Mobsters (Miners)**  
-  Miners on MobNet. They join hits by depositing the target subnet’s alpha into hit pools. They are scored and rewarded by validators (Consiglieres) for effective participation in hits and for holding MOB-α.  
+  The crew. They join hits by depositing the target subnet’s alpha into the pool.  
+  They’re scored and paid by Consiglieres based on participation and MOB-α loyalty.  
   **ANYONE can be a miner (no miner uid or registration required).**
 
-  In this README, **‘Mobsters (miners)’ refers to participants in hits** (not necessarily registered Bittensor miner UIDs); rewards are paid by the MobNet distributor/treasury based on validator scoring.
+  In this README, **‘Mobsters (miners)’** means hit participants (not necessarily registered Bittensor miner UIDs). Payouts come from the MobNet payout desk (distributor/treasury), based on validator scoring.
 
 - **Consiglieres (Validators)**  
-  Validators on MobNet. They:
-  - track internal prices and subnet size / liquidity metrics,  
-  - compute impact scores for hits,  
-  - score and weight Mobsters (miners),  
-  - and drive consensus on how rewards budgets and collateral flows are allocated.
+  The accountants with the books. They:
+  - track prices and liquidity depth,  
+  - compute impact scores and validate jobs,  
+  - score Mobsters (miners),  
+  - and decide how envelopes and collateral flows get split.
 
 ### The MOB-α Token (MOBnet's Alpha token)
 
-MOB-α is the underworld’s currency:
+MOB-α is the Family’s currency:
 
 - Bosses **must acquire and deposit MOB-α** to open hits.  
-- A fixed fraction of each deposit is **burned**; another is held as **collateral**.  
-- A validator-agreed **epoch rewards budget** (via a distributor/treasury mechanism) is turned into MOB-α rewards—**no miner UID is required to participate**.
+- A fixed fraction is **burned** up front (the street tax), another portion is **escrowed** (collateral), and a portion goes to the **Family Vault** (treasury).  
+- A validator-agreed **epoch envelope** is converted into MOB-α rewards—**no miner UID required** to get paid.
 
-The more the game is played, the more MOB-α is **burned**, while the rewards budget can keep the system **slightly +EV** for active Mobsters (miners) (depending on parameters and the reference price \( p_\alpha \)).
+The more the game is played, the more MOB-α gets **burned**, while the envelope can keep active Mobsters **slightly +EV** (depending on parameters and \( p_\alpha \)).
 
 ---
 
 ## Hit Mechanics
 
-A Boss targets subnet \( T \) (e.g. **Subnet 1**) and defines:
+A Boss targets subnet \( T \) and sets:
 
-- Hit pool size \( Q_T \): total units of subnet \( T \)’s alpha to be collected.  
-- MOB-α deposit \( A_{\text{boss}} \).
+- Hit pool size \( Q_T \): total units of subnet \( T \)’s alpha to collect.  
+- MOB-α deposit \( A_{\text{boss}} \): the Boss’s skin in the game.
 
 ---
 
@@ -117,36 +141,34 @@ A Boss targets subnet \( T \) (e.g. **Subnet 1**) and defines:
 
 #### Boss Deposit Rule
 
-To keep Bosses’ skin in the game proportional to the size and risk of the hit, MobNet can define \( A_{\text{boss}} \) as a function of:
+To keep Bosses honest, deposit size can be tied to the notional size of the job:
 
-- \( Q_T \): hit pool size (units of subnet \( T \)’s alpha),  
-- \( P_0 \): pre-hit price of that alpha in TAO,  
-- \( p_\alpha \): reference price of MOB-α in TAO (for accounting),  
-- \( k \): “hit margin” factor (how much MOB-α per 1 TAO of hit size),  
-- \( A_{\min} \): minimum Boss deposit,  
-- \( \tilde{S}_T \): normalized subnet size in \([0,1]\) (optional; used only for deposit discounting).
+- \( Q_T \): pool size (units of \( T \)’s alpha)  
+- \( P_0 \): pre-hit alpha price (TAO per alpha)  
+- \( p_\alpha \): MOB-α reference “street price” (TAO per MOB-α)  
+- \( k \): margin factor (MOB-α per 1 TAO of hit size)  
+- \( A_{\min} \): minimum deposit  
+- \( \tilde{S}_T \): optional normalized size in \([0,1]\) (used only to discount deposits for large targets)
 
-A simple base rule (no size adjustment):
+Base rule:
 
 $$
 A_{\text{boss}}^{\text{base}} = k \cdot \frac{Q_T \cdot P_0}{p_\alpha}
 $$
 
-with a minimum:
+Minimum:
 
 $$
 A_{\text{boss}} = \max\left(A_{\min},\; A_{\text{boss}}^{\text{base}}\right)
 $$
 
-To **encourage hits on larger subnets**, we introduce a size factor that makes **bigger subnets cheaper per unit of notional**:
+To **make big targets cheaper per unit notional** (encourage big-game hunting), apply:
 
 $$
 g(\tilde{S}_T) = \frac{1}{1 + \lambda \cdot \tilde{S}_T}
 $$
 
-where \( \lambda \in [0,1] \) controls how strongly size matters.
-
-The size-adjusted Boss deposit:
+with \( \lambda \in [0,1] \). Then:
 
 $$
 A_{\text{boss}} = \max\left(
@@ -157,63 +179,88 @@ $$
 
 #### Deposit Split
 
+The Boss deposit is split three ways:
+
+- **Street tax (instant burn):** \( 20\% \)  
+- **Escrow (collateral):** \( 70\% \)  
+- **Family Vault (treasury):** \( 10\% \)
+
 $$
 A_{\text{burn,instant}} = 0.20 \, A_{\text{boss}},\quad
 A_{\text{esc}} = 0.70 \, A_{\text{boss}},\quad
 A_{\text{treasury}} = 0.10 \, A_{\text{boss}}
 $$
 
-The hit is posted on the **Hit Board**.
+The job goes up on the **Hit Board**: target \( T \), pool size \( Q_T \), terms, timing, and the Boss’s signature.
 
 ---
 
 ### 2. Pool Filling (Mobsters / Miners Join)
 
-Mobsters join by depositing the target subnet’s alpha token:
+Mobsters join the job by depositing target alpha.
+
+Each Mobster \( i \) posts:
+
+- \( d_i \): units of subnet \( T \)’s alpha
+
+Total pool:
 
 $$
 Q_T = \sum_i d_i
 $$
 
-When \( Q_T \) reaches the target (or times out), the hit is armed.
+When \( Q_T \) hits the mark (or the **Heat Window** ends), the job is armed.
+
+> **Heat Window:** if the hit times out, governance chooses whether the pool is refunded pro-rata or the job executes at the collected size.
 
 ---
 
 ### 3. Hit Execution (One-Shot Sell)
 
-The entire pool \( Q_T \) is sold into **House TAO**, yielding:
+When the job goes down:
+
+- The full pool \( Q_T \) is sold into **House TAO** as a single batched execution.  
+- Proceeds:
 
 $$
 V_{\text{hit}} \quad \text{(in House TAO)}
 $$
 
-Price moves from \( P_0 \) to \( P_1 \).
+- Price moves from \( P_0 \) to \( P_1 \).
+
+That batched sale is the **hit**.
 
 ---
 
 ### 4. Base Payouts & Fee
 
-Fee:
+The House takes a cut: \( f \in [0.01, 0.03] \).
+
+House cut:
 
 $$
 V_{\text{fee}} = f \cdot V_{\text{hit}}
 $$
 
-Mobster payout pool:
+Crew payout pot:
 
 $$
 V_{\text{mob}} = (1 - f) \cdot V_{\text{hit}}
 $$
 
-Base payout to miner \( i \):
+Each Mobster \( i \) gets paid pro-rata:
 
 $$
 \text{Payout}_{i,\text{base}} = V_{\text{mob}} \cdot \frac{d_i}{\sum_j d_j}
 $$
 
+On base payout alone, Mobsters can do slightly worse than an ideal solo sell due to the House cut and slippage—so the envelope (MOB-α rewards) is designed to make the job worth it.
+
 ---
 
 ## Impact Scoring
+
+Impact scoring is how the Consiglieres tell legend from noise.
 
 ### Price Shock
 
@@ -223,19 +270,26 @@ $$
 
 ### Normalized Shock
 
+Pick a max meaningful drop \( \Delta P_{\max} \) (e.g. 0.3–0.5).
+
 $$
 I_{\text{hit}} = \min\left(1, \max\left(0, \frac{\Delta P}{\Delta P_{\max}}\right)\right)
 $$
 
 ### Size-Adjusted Impact (Option C: Alpha-Equivalent Depth)
 
-Validators compute alpha-equivalent depth:
+To compare hits across subnets fairly, validators compute **alpha-equivalent depth**:
+
+- \( R_{\text{TAO},T} \): TAO reserve / TAO depth in subnet \( T \)’s alpha market (from on-chain liquidity data)  
+- \( P_0 \): pre-hit price (TAO per alpha)
+
+Size metric (in alpha units):
 
 $$
 L_T = \frac{R_{\text{TAO},T}}{P_0}
 $$
 
-Use a smoothed value (EMA/TWAP):
+Validators use a smoothed value to reduce gamesmanship:
 
 $$
 L_T^{\text{smooth}} = \text{EMA}(L_T)
@@ -247,19 +301,31 @@ $$
 I'_{\text{hit}} = I_{\text{hit}} \cdot \frac{Q_T}{L_T^{\text{smooth}} + \epsilon}
 $$
 
+High \( I'_{\text{hit}} \) means the crew moved real weight relative to the street’s depth.
+
 ---
 
 ## Emissions & MOB-α Rewards
 
 ### Epoch Reward Budget
 
-Define a MOB-α reward budget each epoch:
+Each epoch, MobNet sets an envelope:
 
 $$
 E_{\text{rewards,epoch}} \quad (\text{MOB-}\alpha)
 $$
 
+This is the **Envelope Pool** used to reward hit participation.
+
 ### Allocating Rewards to Hits
+
+For each hit \( h \):
+
+- \( V_{\text{hit},h} \): hit volume (TAO)  
+- \( I'_{\text{hit},h} \): size-adjusted impact  
+- \( V_{\text{total}} = \sum_k V_{\text{hit},k} \)
+
+Allocation:
 
 $$
 E_{\text{hit},h}
@@ -270,13 +336,13 @@ $$
 
 ### Allocating Rewards Within a Hit
 
-Contribution:
+Contribution share:
 
 $$
 c_i = \frac{d_i}{\sum_j d_j}
 $$
 
-Loyalty:
+Loyalty share (MOB-α holdings):
 
 $$
 \ell_i = \frac{H_i}{\sum_j H_j}
@@ -296,9 +362,13 @@ $$
 
 ### Making Hits Slightly +EV vs Solo Selling
 
+Solo:
+
 $$
 \text{Solo}_i \approx P_{\text{solo}} \cdot d_i
 $$
+
+Hit:
 
 $$
 \text{Hit}_i \approx \text{Payout}_{i,\text{base}} + p_\alpha \cdot R_i
@@ -320,7 +390,7 @@ $$
 A_{\text{esc}} = 0.70 \, A_{\text{boss}}
 $$
 
-Minimum return fraction:
+Minimum return:
 
 $$
 \beta_{\min} = 0.8
@@ -340,7 +410,7 @@ $$
 A_{\text{lost}} = A_{\text{esc}} - A_{\text{returned}}
 $$
 
-Split:
+Split the lost part between the wash and the blessing:
 
 $$
 A_{\text{wash,burn}} = \psi \cdot A_{\text{lost}},\quad
@@ -372,38 +442,32 @@ $$
 - \( f = 0.02 \)  
 - \( \Delta P_{\max} = 0.5 \)  
 - \( \beta_{\min} = 0.8 \)  
-- \( \psi = 0.5 \)  
+- \( \psi = 0.5 \)
 
-**Example pricing assumptions (for this example only):**
+**Example pricing assumptions (example only):**
 
 - \( P_0 = 0.08 \) TAO / \( \alpha_1 \)  
-- \( p_\alpha = 0.005 \) TAO / MOB-α (**illustrative reference price only**, not a peg)
+- \( p_\alpha = 0.005 \) TAO / MOB-α (**reference price for comparisons only**)
 
-Three Mobsters:
+Mobsters:
 
 - Alice: \( d_A = 5{,}000 \), \( H_A = 400 \)  
 - Boris: \( d_B = 3{,}000 \), \( H_B = 300 \)  
 - Cara: \( d_C = 2{,}000 \), \( H_C = 300 \)
 
-$$
-H_{\text{tot}} = 1{,}000 \text{ MOB-}\alpha
-$$
-
 ### Boss Deposit Breakdown
 
 $$
 A_{\text{burn,instant}} = 200,\quad A_{\text{esc}} = 700,\quad A_{\text{treasury}} = 100
-\quad (\text{all in MOB-}\alpha)
+\quad (\text{MOB-}\alpha)
 $$
 
 ### Pool, Price, and Base Payouts
 
 Assume:
 
-- Post-hit price \( P_1 = 0.036 \) TAO / \( \alpha_1 \)  
-- Proceeds \( V_{\text{hit}} = 500 \) TAO (avg 0.05)
-
-Fee:
+- \( P_1 = 0.036 \) TAO / \( \alpha_1 \)  
+- \( V_{\text{hit}} = 500 \) TAO (avg 0.05)
 
 $$
 V_{\text{fee}} = 10,\quad V_{\text{mob}} = 490 \quad (\text{TAO})
@@ -411,9 +475,9 @@ $$
 
 Base payouts:
 
-- Alice: \( 245 \) TAO  
-- Boris: \( 147 \) TAO  
-- Cara: \( 98 \) TAO  
+- Alice: 245 TAO  
+- Boris: 147 TAO  
+- Cara: 98 TAO
 
 ### Impact & Boss Collateral (80% Minimum Return)
 
@@ -432,38 +496,29 @@ $$
 I'_{\text{hit}} \approx \frac{10{,}000}{20{,}000} = 0.5
 $$
 
-Returned escrow:
-
 $$
 A_{\text{returned}} = 700 \cdot (0.8 + 0.2\cdot 0.5) = 630
 $$
-
-Lost:
 
 $$
 A_{\text{lost}} = 70,\quad A_{\text{wash,burn}} = 35,\quad A_{\text{taofather}} = 35
 $$
 
-Totals:
-
-- Burned: \( 235 \) MOB-α  
-- Treasury from Boss side: \( 135 \) MOB-α
-
 ### Emissions-Funded MOB-α Rewards
 
 Assume \( E_{\text{hit}} = 5{,}000 \) MOB-α.
 
-With \( \gamma = 1.0 \), \( \delta = 0.5 \), same weights as before:
+Rewards (same weight scheme as earlier):
 
 - Alice: \( R_A \approx 2{,}675 \) MOB-α  
 - Boris: \( R_B \approx 1{,}395 \) MOB-α  
-- Cara: \( R_C \approx 930 \) MOB-α  
+- Cara: \( R_C \approx 930 \) MOB-α
 
-TAO-equivalent (illustrative):
+TAO-equivalent (illustrative at \( p_\alpha = 0.005 \)):
 
-- Alice: \( 13.375 \) TAO  
-- Boris: \( 6.975 \) TAO  
-- Cara: \( 4.650 \) TAO  
+- Alice: 13.375 TAO  
+- Boris: 6.975 TAO  
+- Cara: 4.650 TAO
 
 ### Comparing Hit vs Solo Selling
 
@@ -471,13 +526,13 @@ Solo baseline (avg 0.05 TAO/α):
 
 - Alice: 250 TAO  
 - Boris: 150 TAO  
-- Cara: 100 TAO  
+- Cara: 100 TAO
 
 Hit outcomes:
 
-- Alice: \( 245 + 13.375 = 258.375 \) TAO  
-- Boris: \( 147 + 6.975 = 153.975 \) TAO  
-- Cara: \( 98 + 4.650 = 102.650 \) TAO  
+- Alice: 258.375 TAO  
+- Boris: 153.975 TAO  
+- Cara: 102.650 TAO
 
 ---
 
@@ -485,16 +540,16 @@ Hit outcomes:
 
 ### For The Subnet Owner (“The Taofather”)
 
-- Demand for MOB-α is driven by gameplay, not just yield  
-- Structural burns reduce supply as usage grows  
-- Treasury + fees fund events, tournaments, and buybacks/burns  
-- A narrative moat: the mafia subnet where hits become lore
+- MOB-α demand comes from **jobs**, not vibes  
+- Burns scale with activity (every job pays the street)  
+- The Family Vault + House cut funds events, buybacks, and more lore  
+- A narrative moat: the subnet where volatility gets weaponized
 
 ### For Users (Bosses, Mobsters / Miners, Consiglieres / Validators)
 
-- **Bosses:** sponsor hits, chase clout, escrow return 80–100%  
-- **Mobsters:** base payouts + MOB-α rewards (potentially slightly +EV)  
-- **Consiglieres:** define scoring, allocate rewards, validate hits
+- **Bosses:** post jobs, chase clout, escrow returns 80–100%  
+- **Mobsters:** run hits for base TAO + envelopes (potentially +EV)  
+- **Consiglieres:** keep the books, score the jobs, protect the rules
 
 ---
 
