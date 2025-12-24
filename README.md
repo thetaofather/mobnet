@@ -4,7 +4,7 @@
 
 ## Abstract
 
-MobNet is a mafia-themed Bittensor subnet where volatility is the product and coordination is the hustle.
+Welcome to MobNet, a mafia-themed Bittensor subnet where volatility is the product and coordination is the hustle.
 
 Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on rival subnets:
 
