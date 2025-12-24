@@ -44,21 +44,21 @@ MobNet is a mafia-themed Bittensor subnet where volatility is the product and co
 
 Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on rival subnets:
 
-- Bosses put a job on the board by locking up MOB-α and paying the street tax.
-- Mobsters (Miners) show up with inventory: the target subnet’s alpha token, pooled for one clean move.
+- Bosses put a job on the board by locking up MOB-α and paying the *street tax*.
+- Mobsters (Miners) show up with inventory: *the target subnet’s alpha token*, pooled for one clean move.
 - When the pool fills, the system executes a single, all-at-once sell (“the hit”), kicking out a payout pot and a price shock.
 
 Each job gets an impact score  *how hard the street felt it* which determines:
 
 - how much of the Boss’s escrow gets washed and returned vs what gets burned,
-- how much MOB-α and base payout each Mobster earns,
+- how much MOB-α and TAO payout each Mobster (miner) earns,
 - and where the job lands on the public Hit Board (the Wall of Jobs).
 
 MobNet funds MOB-α rewards with a protocol-defined epoch budget (the Envelope), backed by fees and treasury flows (and optionally validator-governed conversions of subnet reward inflows into MOB-α). Parameters can be tuned so that:
 
-> Over time, Mobsters usually do slightly better (in expectation) running hits than dumping alone.
+> Over time, Mobsters (miners) usually do slightly better running hits than selling alone.
 
-Important disclosure on MOB-α value: Any TAO-equivalent conversions use a reference price `p_alpha` for accounting and examples. `p_alpha` is not a peg, not a promise, and not a guarantee — it’s a “street price” input that can change.
+Important disclosure on MOB-α value: Any TAO-equivalent conversions use a reference price `p_alpha` for accounting and examples. `p_alpha` is not a peg, not a promise, and not a guarantee — it’s a “street price” input that constantly changes.
 
 ---
 
@@ -68,7 +68,7 @@ MobNet lives in “Tensor City,” a district of Bittensor subnets. Each subnet 
 
 - an alpha token (example: alpha_1 for Subnet 1),
 - a reputation,
-- and — if the streets are talking — a target on its back.
+- and *if the streets are talking* — a target on its back.
 
 MobNet is the underworld layer where alpha tokens become instruments in a game of timing, coordination, and clout.
 
@@ -78,13 +78,13 @@ MobNet is the underworld layer where alpha tokens become instruments in a game o
 - Boss — A hit sponsor. Posts jobs by depositing MOB-α and setting terms.
 - Mobsters (Miners) — Hit participants. Provide target alpha to the pool and earn payouts + MOB-α rewards.
 - Consiglieres (Validators) — Scorers/validators. Keep the books, compute impact, decide reward splits.
-- Hit — A single coordinated, batched sell of pooled target alpha into TAO.
-- Hit Board / Wall of Jobs — Public listing of open and completed hits + impact scores and lore.
+- Hit — A single coordinated, batched sell of pooled target alpha resulting in TAO.
+- Hit Board / Wall of Jobs — Public listing of open and completed hits + impact scores + lore.
 - Street Tax — Upfront, non-refundable burn on the Boss deposit.
 - Escrow / Collateral — Boss’s locked MOB-α that gets “washed” back 80–100% depending on impact.
 - Wash — Returning escrowed MOB-α; the “lost slice” becomes wash burn + blessing fee.
-- Washing Fee — The portion of lost escrow that is burned forever (parameter `psi`).
-- The Blessing — The Taofather’s extra cut from lost escrow (the remainder `1-psi`).
+- Washing Fee — The portion of escrow that is burned forever (parameter `psi`).
+- The Blessing — The Taofather’s cut from escrow (the remainder `1-psi`).
 - Family Vault — Protocol treasury that receives the Boss treasury cut and other routed flows.
 - House TAO — The settlement asset for hit proceeds (the “house” settles in TAO).
 - House Cut — The protocol fee `f` taken from hit proceeds before base payouts.
@@ -95,15 +95,15 @@ MobNet is the underworld layer where alpha tokens become instruments in a game o
 ### Roles
 
 - Bosses (Hit Sponsors)  
-  Put up MOB-α, name the target, set the terms, and light the fuse.  
-  ANYONE can be a boss.
+  Put up MOB-α, name your target, define the terms, and put the hit out.  
+  ANYONE can be a boss!
 
 - Mobsters (Miners)  
   The crew. They join hits by depositing the target subnet’s alpha into the pool.  
-  They’re scored and paid by Consiglieres based on participation and MOB-α loyalty.  
-  ANYONE can be a miner (no miner uid or registration required).
+  They’re scored and paid by Consiglieres (validators) based on participation and MOB-α loyalty (staked MOB-α).  
+  ANYONE can be a miner!
 
-  In this README, “Mobsters (miners)” means hit participants (not necessarily registered Bittensor miner UIDs). Payouts come from the MobNet payout desk (distributor/treasury), based on validator scoring.
+  “Mobsters (miners)” means hit participants (not necessarily registered Bittensor miner UIDs). Payouts come from the MobNet payout desk (distributor/treasury), based on validator scoring.
 
 - Consiglieres (Validators)  
   The accountants with the books. They:
