@@ -22,7 +22,7 @@ Each job gets an impact score  *how hard the street felt it* which determines:
 - how much MOB-α and TAO payout each Mobster (miner) earns,
 - and where the job lands on the public Hit Board (the Wall of Jobs).
 
-MobNet funds MOB-α rewards with a protocol-defined epoch budget (the Envelope), backed by fees and treasury flows (and optionally validator-governed conversions of subnet reward inflows into MOB-α). Parameters can be tuned so that:
+MobNet funds MOB-α rewards with a protocol-defined budget (the Envelope), backed by fees and treasury flows (and optionally validator-governed conversions of subnet reward inflows into MOB-α). Parameters can be tuned so that:
 
 > Over time, Mobsters (miners) usually do slightly better running hits than selling alone.
 
