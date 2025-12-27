@@ -1,4 +1,4 @@
-<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/1e0bb3a1-3099-4a23-9815-48d37fa46c32" />
+<img width="938" height="690" alt="image (4)" src="https://github.com/user-attachments/assets/1009e9db-96c9-4279-ace3-6544629842d3" />
 
 <h1 align="center">The Taofather:   
  
