@@ -105,14 +105,19 @@ We define a **Boss Skin Ratio** using a TAO-equivalent accounting comparison:
 
 Notional comparisons:
 
-- MOB-α notional: `N_A = A_boss · p_alpha`
-- Target-alpha notional: `N_X = X_boss · P0`
+- MOB-α notional:
+  
+  $$N_A = A_{boss}\cdot p_{\alpha}$$
+
+- Target-alpha notional:
+  
+  $$N_X = X_{boss}\cdot P0$$
 
 Boss Skin Ratio:
 
-\[
-\rho = \frac{N_X}{N_A} = \frac{X_{boss}\,P0}{A_{boss}\,p_{\alpha}}
-\]
+$$
+\rho = \frac{N_X}{N_A} = \frac{X_{boss}\cdot P0}{A_{boss}\cdot p_{\alpha}}
+$$
 
 Interpretation:
 - Higher `ρ` = Boss is putting more target alpha value on the line **per unit** of MOB-α deposit.
@@ -126,9 +131,9 @@ Interpretation:
 
 Normalize:
 
-\[
+$$
 \rho_{norm}=\text{clamp}\left(\frac{\rho-0.50}{2.00-0.50},\,0,\,1\right)
-\]
+$$
 
 ---
 
@@ -157,9 +162,9 @@ Two rules apply:
 
 Let `ν_X` be the target-alpha skim rate:
 
-\[
+$$
 X_{vault} = \nu_X \cdot X_{boss},\quad \nu_X \in [0.0025,\;0.01]
-\]
+$$
 
 Recommended schedule (aligned with tag quality, “clean work costs less”):
 
@@ -172,9 +177,9 @@ Recommended schedule (aligned with tag quality, “clean work costs less”):
 
 Target alpha actually sold for the hit:
 
-\[
+$$
 X'_{boss}=X_{boss}-X_{vault}
-\]
+$$
 
 > Note: the Family Vault receives this skim **in target alpha units** (not MOB-α). It can be held, auctioned, or used for future protocol mechanics.
 
@@ -196,28 +201,28 @@ Recommended:
 
 Weighted total:
 
-\[
+$$
 W=\omega_b\cdot X'_{boss}+\sum_i d_i
-\]
+$$
 
 Pool payout shares:
 
-\[
+$$
 P_{boss,pool} = V_{pool}\cdot \frac{\omega_b\cdot X'_{boss}}{W}
-\]
+$$
 
-\[
+$$
 P_{i,TAO} = V_{pool}\cdot \frac{d_i}{W}
-\]
+$$
 
 **Anti-gaming guardrail (recommended):**  
 Only apply `ω_b > 1` if the Boss is meaningfully exposed:
 
-\[
+$$
 X'_{boss} \ge 0.10\cdot\left(X'_{boss}+\sum_i d_i\right)
-\]
+$$
 
-If not, set `ω_b = 1.0` for that hit.
+If not, set `\omega_b = 1.0` for that hit.
 
 ---
 
@@ -289,27 +294,27 @@ $$
 Using `ρ_norm` from earlier:
 
 **Street Tax discount modifier**
-\[
+$$
 m_{\tau}(\rho)=1-0.30\cdot \rho_{norm}
-\]
+$$
 
-\[
+$$
 \tau_{eff}(I',\rho)=\tau(I')\cdot m_{\tau}(\rho)
-\]
+$$
 
 **Kickback multiplier**
-\[
+$$
 m_b(\rho)=0.90+0.20\cdot \rho_{norm}
-\]
+$$
 
-\[
+$$
 b_{eff}(I',\rho)=\min(0.03,\; b(I')\cdot m_b(\rho))
-\]
+$$
 
 **Wash minimum floor (improves with `ρ`)**
-\[
+$$
 \beta_{min}(\rho)=0.80+0.10\cdot \rho_{norm}
-\]
+$$
 
 So serious Bosses (ρ near 2.0) get:
 - lower effective Street Tax
@@ -334,9 +339,9 @@ Boss chooses:
 - Mobsters deposit target alpha `d_i`
 - Total sold in hit:
 
-\[
+$$
 Q_T = X'_{boss} + \sum_i d_i
-\]
+$$
 
 ### 3) The hit executes
 All pooled target alpha is sold in a single batched execution.
@@ -350,23 +355,23 @@ Output:
 - Boss gets kickback `b_eff(I',ρ)` (tag + skin adjusted)
 - Pool payout pot:
 
-\[
+$$
 V_{pool} = (1 - t - b_{eff}(I',\rho))\cdot V_{hit}
-\]
+$$
 
 - Pool payout distribution uses **Boss weight** `ω_b`:
 
-\[
+$$
 W=\omega_b\cdot X'_{boss}+\sum_i d_i
-\]
+$$
 
-\[
+$$
 P_{boss,pool} = V_{pool}\cdot \frac{\omega_b\cdot X'_{boss}}{W}
-\]
+$$
 
-\[
+$$
 P_{i,TAO} = V_{pool}\cdot \frac{d_i}{W}
-\]
+$$
 
 ### 5) The books close (MOB-α side + envelopes)
 - Street Heat is calculated
@@ -414,21 +419,21 @@ Even if hit execution pays rake + kickback, the **Envelope** can make hit partic
 - Cara: `2,000`
 
 ### Target-alpha vault skim (CLEAN → 0.50%)
-\[
+$$
 \nu_X = 0.005,\quad X_{vault} = 0.005\cdot 2000 = 10\;\alpha_1
-\]
+$$
 
 So Boss alpha sold:
 
-\[
+$$
 X'_{boss} = 2000 - 10 = 1990\;\alpha_1
-\]
+$$
 
 Total sold:
 
-\[
+$$
 Q_T = 1990 + (5000+3000+2000) = 11,990\;\alpha_1
-\]
+$$
 
 ### Settlement (TAO)
 **Proceeds:** `V_hit = 500 TAO`  
@@ -438,43 +443,43 @@ Q_T = 1990 + (5000+3000+2000) = 11,990\;\alpha_1
 
 Base kickback at `I'=0.50`:
 
-\[
+$$
 b(0.50)=0.0200 + 0.0075\cdot\frac{0.50-0.35}{0.40}=0.0228125
-\]
+$$
 
 Assume Boss has solid skin ratio (`ρ_norm ≈ 0.67`), so:
 
-\[
+$$
 m_b(\rho)=0.90+0.20\cdot 0.67\approx 1.033
-\]
+$$
 
-\[
+$$
 b_{eff}\approx 0.0228125\cdot 1.033 = 0.02357
-\]
+$$
 
 **Boss Kickback:** `0.02357 * 500 = 11.785 TAO`
 
 Pool pot:
 
-\[
+$$
 V_{pool} = 500 - 7.5 - 11.785 = 480.715\;TAO
-\]
+$$
 
 ### Boss-weighted pool payout
 Use `ω_b = 1.10` and Boss eligibility holds (Boss is >10% of raw pool).
 
 Weighted total:
 
-\[
+$$
 W = 1.10\cdot 1990 + (5000+3000+2000)=2189+10000=12189
-\]
+$$
 
 Pool payouts:
 
-- Boss pool share: \(\frac{2189}{12189}=17.96\%\)  
-- Alice: \(\frac{5000}{12189}=41.01\%\)  
-- Boris: \(\frac{3000}{12189}=24.61\%\)  
-- Cara: \(\frac{2000}{12189}=16.41\%\)
+- Boss pool share: `2189 / 12189 = 17.96%`  
+- Alice: `5000 / 12189 = 41.01%`  
+- Boris: `3000 / 12189 = 24.61%`  
+- Cara: `2000 / 12189 = 16.41%`
 
 So:
 
@@ -494,53 +499,53 @@ So:
 
 Street Tax (CLEAN at `I'=0.50`):
 
-\[
+$$
 \tau(0.50)=0.0400 - 0.0100\cdot\frac{0.50-0.35}{0.40}=0.03625
-\]
+$$
 
 Assume `ρ_norm≈0.67`:
 
-\[
+$$
 m_{\tau}(\rho)=1-0.30\cdot 0.67\approx 0.80
-\]
+$$
 
-\[
+$$
 \tau_{eff}\approx 0.03625\cdot 0.80=0.029
-\]
+$$
 
 So **Street Tax burned:** `29.0 MOB-α`
 
 **Escrow (washable):**
-\[
+$$
 A_{esc}=A_{boss}-A_{vault}-A_{tax}=1000-25-29=946
-\]
+$$
 
 ### Wash Result (β_min improves with ρ)
-\[
+$$
 \beta_{min}(\rho)=0.80+0.10\cdot 0.67\approx 0.867
-\]
+$$
 
-\[
+$$
 A_{returned}=A_{esc}\cdot\left(\beta_{min}+(1-\beta_{min})\cdot \min(1,I')\right)
-\]
+$$
 
 At `I'=0.50`:
 
-\[
+$$
 A_{returned}\approx 946\cdot(0.867+0.133\cdot 0.5)=946\cdot 0.9335\approx 883.7
-\]
+$$
 
 Lost:
 
-\[
+$$
 A_{lost}\approx 62.3
-\]
+$$
 
 Split loss (`ψ=0.5`):
 
-\[
+$$
 A_{wash,burn}\approx 31.15,\quad A_{taofather,blessing}\approx 31.15
-\]
+$$
 
 ### Envelope (MOB-α) *(illustrative, rep-weighted)*
 **Envelope Paid:** `4,000 MOB-α`
@@ -571,15 +576,15 @@ Boss deposit can be tied to notional size:
 
 Base:
 
-\[
+$$
 A_{boss}^{base} = k \cdot \frac{Q_T \cdot P0}{p_{\alpha}}
-\]
+$$
 
 Minimum:
 
-\[
+$$
 A_{boss} = \max\left(A_{min},\; A_{boss}^{base}\right)
-\]
+$$
 
 ---
 
@@ -589,39 +594,39 @@ Let `v = 0.025` be the fixed vault share.
 
 Street tax burned:
 
-\[
+$$
 A_{tax} = \tau_{eff}(I',\rho)\cdot A_{boss}
-\]
+$$
 
 Family Vault:
 
-\[
+$$
 A_{vault} = v\cdot A_{boss}
-\]
+$$
 
 Escrow:
 
-\[
+$$
 A_{esc} = A_{boss}-A_{vault}-A_{tax}
-\]
+$$
 
 ---
 
 ## A3) Boss Target Alpha Vault Skim
 
-\[
+$$
 X_{vault}=\nu_X\cdot X_{boss}
-\]
+$$
 
-\[
+$$
 X'_{boss}=X_{boss}-X_{vault}
-\]
+$$
 
 Total sold:
 
-\[
+$$
 Q_T=X'_{boss}+\sum_i d_i
-\]
+$$
 
 ---
 
@@ -629,45 +634,45 @@ Q_T=X'_{boss}+\sum_i d_i
 
 From hit proceeds `V_hit`:
 - Taofather rake `t = 0.015`
-- Boss kickback `b_eff(I',ρ)`
+- Boss kickback `b_eff(I',\rho)`
 
-\[
+$$
 V_{taofather}=t\cdot V_{hit}
-\]
+$$
 
-\[
+$$
 V_{boss,kick}=b_{eff}(I',\rho)\cdot V_{hit}
-\]
+$$
 
 Pool payout pot:
 
-\[
+$$
 V_{pool}=(1-t-b_{eff}(I',\rho))\cdot V_{hit}
-\]
+$$
 
 Boss-weighted denominator:
 
-\[
+$$
 W=\omega_b\cdot X'_{boss}+\sum_i d_i
-\]
+$$
 
 Boss pool payout:
 
-\[
+$$
 P_{boss,pool}=V_{pool}\cdot \frac{\omega_b\cdot X'_{boss}}{W}
-\]
+$$
 
 Mobster TAO payout:
 
-\[
+$$
 P_{i,TAO}=V_{pool}\cdot \frac{d_i}{W}
-\]
+$$
 
 Boss total TAO:
 
-\[
+$$
 P_{boss,total}=V_{boss,kick}+P_{boss,pool}
-\]
+$$
 
 ---
 
@@ -675,33 +680,33 @@ P_{boss,total}=V_{boss,kick}+P_{boss,pool}
 
 Price shock:
 
-\[
+$$
 \Delta P = \frac{P0 - P1}{P0}
-\]
+$$
 
 Normalized shock:
 
-\[
+$$
 I_{hit} = \min\left(1,\; \max\left(0,\; \frac{\Delta P}{\Delta P_{max}}\right)\right)
-\]
+$$
 
 Alpha-equivalent depth:
 
-\[
+$$
 L_T = \frac{R_{TAO,T}}{P0}
-\]
+$$
 
 Smoothed depth:
 
-\[
+$$
 L_T^{smooth} = EMA(L_T)
-\]
+$$
 
 Size-adjusted heat:
 
-\[
+$$
 I'_{hit} = I_{hit}\cdot \frac{Q_T}{L_T^{smooth} + \epsilon}
-\]
+$$
 
 ---
 
@@ -709,45 +714,45 @@ I'_{hit} = I_{hit}\cdot \frac{Q_T}{L_T^{smooth} + \epsilon}
 
 Epoch envelope pool:
 
-\[
+$$
 E_{rewards,epoch}\quad (\text{in MOB-}\alpha)
-\]
+$$
 
 Allocate to hits:
 
-\[
+$$
 s_h=\frac{V_{hit,h}}{\sum_k V_{hit,k}}\cdot (1+\kappa\cdot I'_{hit,h})
-\]
+$$
 
-\[
+$$
 E_{hit,h}=E_{rewards,epoch}\cdot \frac{s_h}{\sum_j s_j}
-\]
+$$
 
 Allocate within a hit (mobsters only):
 
 Contribution share:
 
-\[
+$$
 c_i=\frac{d_i}{\sum_j d_j}
-\]
+$$
 
 Reputation share:
 
-\[
+$$
 r_i=\frac{Rep_i}{\sum_j Rep_j}
-\]
+$$
 
 Weight:
 
-\[
+$$
 w_i=c_i^{\gamma}\cdot r_i^{\delta}
-\]
+$$
 
 Reward:
 
-\[
+$$
 R_{i,MOB\alpha}=E_{hit}\cdot \frac{w_i}{\sum_k w_k}
-\]
+$$
 
 **Constraint (intentional):**
 - TAO payout ignores Rep
@@ -759,40 +764,40 @@ R_{i,MOB\alpha}=E_{hit}\cdot \frac{w_i}{\sum_k w_k}
 
 Minimum return depends on Boss skin ratio:
 
-\[
+$$
 \beta_{min}(\rho)=0.80+0.10\cdot \rho_{norm}
-\]
+$$
 
 Returned escrow:
 
-\[
+$$
 A_{returned}=A_{esc}\cdot\left(\beta_{min}(\rho)+(1-\beta_{min}(\rho))\cdot \min(1,\; I'_{hit})\right)
-\]
+$$
 
 Lost escrow:
 
-\[
+$$
 A_{lost}=A_{esc}-A_{returned}
-\]
+$$
 
 Split loss:
 
-\[
+$$
 A_{wash,burn}=\psi\cdot A_{lost},\quad
 A_{taofather,blessing}=(1-\psi)\cdot A_{lost}
-\]
+$$
 
 Total burn:
 
-\[
+$$
 A_{burn,total}=A_{tax}+\psi\cdot (A_{esc}-A_{returned})
-\]
+$$
 
 Vault total:
 
-\[
+$$
 A_{vault,total}=0.025\,A_{boss}
-\]
+$$
 
 ---
 
