@@ -19,13 +19,13 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
 
 ## The Game Loop (How It Plays)
 
-1) **A Boss** picks a target subnet and posts a job on the **Hit Board**  
+1) **A Boss** (anyone) picks a target subnet and posts a job on the **Hit Board**  
 2) Boss deposits **MOB-α** (Street Tax Hold + Washable Escrow + Family Vault)  
-3) **Mobsters** join by depositing the target subnet’s alpha into the pool  
+3) **Mobsters** (miners) join by depositing the target subnet’s alpha into the pool  
 4) Pool fills (or the **Heat Window** ends) → the hit is armed  
 5) The system executes **one batched sell** (“the hit”) → TAO proceeds  
 6) TAO proceeds split into: **Taofather Rake**, **Boss Kickback**, **Crew Payout**  
-7) Consiglieres compute **Street Heat** (impact) and publish the dossier  
+7) Consiglieres (validators) compute **Street Heat** (impact) and publish the dossier  
 8) Boss escrow is “washed” back (bounded), with a small loss split **burn + blessing**  
 9) The crew earns **Envelope** rewards (MOB-α) on top of TAO payouts  
 10) The job becomes lore: **BOTCHED / MESSY / CLEAN / LEGENDARY**, ranks, Families, and leaderboards
