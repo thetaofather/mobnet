@@ -105,9 +105,6 @@ Associate → Capo → Underboss → Don
 ### Mobster Ranks (by successful crew runs)
 Runner → Soldier → Made → Enforcer
 
-### Consigliere Titles (by scoring accuracy / uptime)
-Accountant → Consigliere → The Commission
-
 ### Families (Teams)
 Mobsters can affiliate with a **Family** (tag/registry). Families have:
 - leaderboards (volume, heat, win-rate)
