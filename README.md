@@ -8,10 +8,10 @@
 
 Welcome to The Taofather, a mob-themed Bittensor subnet in the city of San Taovanni.
 
-Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on rival subnets:
+Its native token, MOB-α (“Mob Alpha”), which bankrolls an underworld of hits on rival subnets:
 
-- Bosses put a job on the board by locking up MOB-α and paying the *street tax*.
-- Mobsters (Miners) show up with inventory: *the target subnet’s alpha token*, pooled for one clean move.
+- Bosses put jobs on the board by locking up MOB-α and by paying the *street tax*.
+- Mobsters (Miners) show up with inventory: *the target subnet’s alpha token*, pooled for one swift move.
 - When the pool fills, the system executes a single, all-at-once sell (“the hit”), kicking out a payout pot and a price shock.
 
 Each job gets an impact score  *how hard the street felt it* which determines:
