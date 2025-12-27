@@ -1,6 +1,6 @@
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/e128c303-7891-4f68-9683-4d72c89ad4c9" />
+<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/e9e2e51f-a4cf-4704-a496-6ddc7d24da19" />
 
-<h1 align="center">The Taofather’s MOBnet:   
+<h1 align="center">The Taofather:   
  
   Turning dTAO Volatility Into Mafia-Style Hits</h1>
 
@@ -8,7 +8,7 @@
 
 ## Intro
 
-Welcome to MOBnet, a mafia-themed Bittensor subnet where volatility is the product and coordination is the hustle.
+Welcome to The Taofather, a mafia-themed Bittensor subnet in the city of San Taovanni.
 
 Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on rival subnets:
 
