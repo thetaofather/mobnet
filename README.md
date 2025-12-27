@@ -534,7 +534,7 @@ $$
 ## Value Proposition
 
 ### For The MOB-α holders
-- **Bosses must buy (MOB-α) to put out hits
+- **Bosses** must buy (MOB-α) to put out hits
 - **Street Tax (burn):** `2.5%–5%` burn 
 
 ### For Bosses
