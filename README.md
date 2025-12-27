@@ -58,7 +58,7 @@ To post a hit, the Boss deposits `A_boss` MOB-α. The Street Tax is **not a fixe
 
 The Boss deposit always allocates a fixed slice to the vault:
 
-- **Family Vault:** **10%** of `A_boss`
+- **Family Vault:** **2.5%** of `A_boss`
 - The remainder (after finalized Street Tax) becomes **Escrow (washable)**.
 
 ---
@@ -274,7 +274,8 @@ $$
 - Cara: `96.21875 TAO`
 
 ### Boss Tribute (MOB-α)
-**Boss Deposit:** `A_boss = 1,000 MOB-α`  
+**Boss Deposit:** `A_boss = 1,000 MOB-α`
+
 **Street Tax (finalized):** `τ(0.50)` is in CLEAN range:
 
 $$
@@ -283,10 +284,11 @@ $$
 
 So **Street Tax burned:** `36.25 MOB-α` (3.625%)
 
-**Family Vault (10%):** `100 MOB-α`  
+**Family Vault (2.5%):** `25 MOB-α`
+
 **Escrow (washable):**
 $$
-A_{esc} = A_{boss}\cdot(1 - 0.10 - \tau(I')) = 1000\cdot(0.86375)=863.75
+A_{esc} = A_{boss}\cdot(1 - 0.025 - \tau(I')) = 1000\cdot(0.93875)=938.75
 $$
 
 ### Street Heat (Impact)
@@ -297,11 +299,11 @@ $$
 
 ### Wash Result (β_min=0.8, ψ=0.5)
 $$
-A_{returned} = 863.75\cdot (0.8 + 0.2\cdot 0.5)=863.75\cdot 0.9=777.375
+A_{returned} = 938.75\cdot (0.8 + 0.2\cdot 0.5)=938.75\cdot 0.9=844.875
 $$
 
 $$
-A_{lost}=86.375,\quad A_{wash,burn}=43.1875,\quad A_{taofather,blessing}=43.1875
+A_{lost}=93.875,\quad A_{wash,burn}=46.9375,\quad A_{taofather,blessing}=46.9375
 $$
 
 ### Envelope (MOB-α) *(illustrative)*
@@ -363,7 +365,7 @@ $$
 
 ## A2) Boss Deposit Split (Street Tax depends on heat)
 
-Let `v = 0.10` be the fixed vault share.
+Let `v = 0.025` be the fixed vault share.
 
 Street tax burned:
 
@@ -527,7 +529,7 @@ A_{burn,total} = \tau(I'_{hit})\,A_{boss} + \psi\cdot (A_{esc}-A_{returned})
 $$
 
 $$
-A_{vault,total} = 0.10\,A_{boss}
+A_{vault,total} = 0.025\,A_{boss}
 $$
 
 ---
@@ -539,7 +541,7 @@ $$
 **The Rackets (explicit):**
 1) **The Rake (TAO):** `1.5%` of every hit’s TAO proceeds  
 2) **The Blessing (MOB-α):** `(1-ψ)` of Boss escrow loss  
-3) **Family Vault (MOB-α):** `10%` of every Boss deposit  
+3) **Family Vault (MOB-α):** `2.5%` of every Boss deposit  
 4) **Street Tax (burn):** `2.5%–5%` burn (cheaper when hits are clean)
 
 ### For Bosses
