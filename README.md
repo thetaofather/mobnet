@@ -6,7 +6,7 @@
 
 ## Intro
 
-Welcome to The Taofather, a mafia-themed Bittensor subnet in the city of San Taovanni.
+Welcome to The Taofather, a mob-themed Bittensor subnet in the city of San Taovanni.
 
 Its native token, MOB-α (“Mob Alpha”), bankrolls an underworld of hits on rival subnets:
 
