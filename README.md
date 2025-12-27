@@ -50,7 +50,7 @@ So Mobsters receive **95.5%–97.5%** of hit TAO proceeds.
 
 ### Boss deposit (MOB-α) — Street Tax gets cheaper when the hit is clean
 
-To post a hit, the Boss deposits `A_boss` MOB-α. The Street Tax is **not a fixed burn** anymore — it’s a **Street Tax Hold** that is finalized after the hit based on Street Heat:
+To post a hit, the Boss deposits `A_boss` MOB-α. The Street Tax is **not a fixed burn**, it’s a **Street Tax Hold** that is finalized after the hit based on Street Heat:
 
 - **Effective Street Tax:** **2.5%–5%** of `A_boss` (burned)
 - **Better Street Heat → lower Street Tax**
