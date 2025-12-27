@@ -20,7 +20,7 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
 ## The Game Loop (How It Plays)
 
 1) **A Boss** picks a target subnet and posts a job on the **Hit Board**  
-2) Boss deposits **MOB-α** (Street Tax + Washable Escrow + Family Vault)  
+2) Boss deposits **MOB-α** (Street Tax Hold + Washable Escrow + Family Vault)  
 3) **Mobsters** join by depositing the target subnet’s alpha into the pool  
 4) Pool fills (or the **Heat Window** ends) → the hit is armed  
 5) The system executes **one batched sell** (“the hit”) → TAO proceeds  
@@ -42,22 +42,24 @@ When a hit executes, it produces:
 
 From `V_hit`, the protocol takes:
 
-- **Taofather Rake:** **5%**
-- **Consiglieres:** **0%** (current policy)
+- **Taofather Rake:** **1.5%**
 - **Boss Kickback:** **1%–3%** depending on how clean the hit was
 - The rest goes to the **Crew (Mobsters)**
 
-So Mobsters always receive **92%–94%** of hit TAO proceeds.
+So Mobsters receive **95.5%–97.5%** of hit TAO proceeds.
 
-### Boss deposit (MOB-α)
+### Boss deposit (MOB-α) — Street Tax gets cheaper when the hit is clean
 
-To post a hit, the Boss deposits `A_boss` MOB-α split as:
+To post a hit, the Boss deposits `A_boss` MOB-α. The Street Tax is **not a fixed burn** anymore — it’s a **Street Tax Hold** that is finalized after the hit based on Street Heat:
 
-- **Street Tax (burn):** **5%**
-- **Escrow (washable):** **85%**
-- **Family Vault:** **10%**
+- **Effective Street Tax:** **2.5%–5%** of `A_boss` (burned)
+- **Better Street Heat → lower Street Tax**
+- Anything held above the final tax is rebated back into escrow (i.e., you get it back unless your wash loss takes it later)
 
-**Street Tax is always burned.** Escrow is mostly returned — how much depends on Street Heat.
+The Boss deposit always allocates a fixed slice to the vault:
+
+- **Family Vault:** **10%** of `A_boss`
+- The remainder (after finalized Street Tax) becomes **Escrow (washable)**.
 
 ---
 
@@ -67,16 +69,13 @@ To post a hit, the Boss deposits `A_boss` MOB-α split as:
 Runs the city. Sets the street rules. Collects the rake.
 
 ### Boss (Hit Sponsor)
-Posts jobs. Pays the Street Tax. Takes wash risk. Earns kickbacks on clean hits.
+Posts jobs. Pays Street Tax (cheaper on clean hits). Takes wash risk. Earns kickbacks on clean hits.
 
 ### Mobsters (Crew / Miners)
 Bring inventory (target alpha). Get paid in TAO + envelopes (MOB-α). Build reputation.
 
 ### Consiglieres (Validators / Bookkeepers)
 Compute Street Heat. Validate settlement math. Publish the dossier and leaderboards.
-
-> **Consiglieres fee policy (current):** **0%** of the TAO rake.  
-> Compensation (if any) is via reputation, governance influence, or optional future envelope routing.
 
 ---
 
@@ -86,11 +85,13 @@ Compute Street Heat. Validate settlement math. Publish the dossier and leaderboa
 - **Hit Board / Wall of Jobs** — public list of hits (open + completed)  
 - **Heat Window** — time limit for a pool to fill  
 - **Street Heat** — the impact score (“did the streets feel it?”)  
-- **Street Tax** — Boss’s 5% burn to post a hit  
+- **Street Tax Hold** — Boss’s held tribute; finalized and burned after the hit (2.5–5%)  
 - **Wash** — returning Boss escrow (bounded)  
 - **The Blessing** — Taofather’s share of escrow loss  
 - **The Envelope** — MOB-α rewards paid to crews for running hits  
-- **BOTCHED / MESSY / CLEAN / LEGENDARY** — hit tags based on heat/quality
+- **BOTCHED / MESSY / CLEAN / LEGENDARY** — hit tags based on heat/quality  
+- **The Rake** — Taofather’s TAO cut from every hit (**1.5%**)  
+- **Kickback** — Boss bonus from TAO proceeds (**1–3%** depending on tag)
 
 ---
 
@@ -144,9 +145,15 @@ Let `I' = I'_{hit}`:
 - **LEGENDARY**: `I' ≥ 0.75`  
   *“Everybody felt it. This one goes on the wall.”*
 
-### Kickback Schedule (aligned to tags)
+---
 
-Boss kickback is a **direct cut of `V_hit`** and scales with tag quality.
+## Kickback + Street Tax Schedule (Aligned to Tags)
+
+Boss incentives have two levers:
+1) **Kickback** (TAO, paid out of `V_hit`) rises with tag quality  
+2) **Street Tax** (MOB-α, burned out of `A_boss`) falls with tag quality
+
+### Boss Kickback `b(I')` (TAO cut of `V_hit`)
 
 | Tag | Street Heat `I'` | Boss Kickback `b(I')` |
 |---|---:|---:|
@@ -154,8 +161,6 @@ Boss kickback is a **direct cut of `V_hit`** and scales with tag quality.
 | MESSY | `0.15 – 0.35` | **1.00% → 2.00%** (linear) |
 | CLEAN | `0.35 – 0.75` | **2.00% → 2.75%** (linear) |
 | LEGENDARY | `≥ 0.75` | **3.00%** |
-
-**Piecewise definition:**
 
 $$
 b(I')=
@@ -167,16 +172,29 @@ b(I')=
 \end{cases}
 $$
 
-This gives:
-- **always** at least **1%** (Boss is always enticed to post),
-- **CLEAN** hits push kickback above **2%**,
-- **LEGENDARY** caps at **3%**.
+### Effective Street Tax `τ(I')` (MOB-α burn of `A_boss`)
 
-### Execution Quality Checks (optional, recommended)
+| Tag | Street Heat `I'` | Street Tax `τ(I')` |
+|---|---:|---:|
+| BOTCHED | `< 0.15` | **5.00%** |
+| MESSY | `0.15 – 0.35` | **5.00% → 4.00%** (linear) |
+| CLEAN | `0.35 – 0.75` | **4.00% → 3.00%** (linear) |
+| LEGENDARY | `≥ 0.75` | **2.50%** |
 
-- **Fill Integrity:** pool fill ≥ `min_fill` (e.g. 98%) OR mark as “BOTCHED (Partial Fill)”
-- **Price Source Integrity:** `P0` and `P1` must pass validator checks (TWAP/median of sources)
-- **Slippage Guard:** if execution price deviates too far from TWAP, flag dossier as “DISPUTED”
+$$
+\tau(I')=
+\begin{cases}
+0.0500 & I' < 0.15\\
+0.0500 - 0.0100\cdot\frac{I' - 0.15}{0.20} & 0.15\le I' < 0.35\\
+0.0400 - 0.0100\cdot\frac{I' - 0.35}{0.40} & 0.35\le I' < 0.75\\
+0.0250 & I' \ge 0.75
+\end{cases}
+$$
+
+**How “Street Tax Hold” works in practice:**
+- At creation, the protocol earmarks up to the **max** tax (5%) as a held tribute.
+- After the hit, the final Street Tax burned is `τ(I') * A_boss`.
+- Any held amount above the final tax is **rebated back into escrow** (so clean hits reduce your effective tax).
 
 ---
 
@@ -202,12 +220,13 @@ Output:
 - price moves from `P0` to `P1`
 
 ### 4) TAO is split and paid
-- Taofather takes rake (5%)
-- Boss gets kickback (tag-aligned, 1–3%)
+- Taofather takes rake (**1.5%**)
+- Boss gets kickback (tag-aligned, **1–3%**)
 - Crew gets the rest, paid pro-rata by contribution
 
 ### 5) The books close
 - Street Heat is calculated
+- Street Tax is finalized (burn `τ(I')*A_boss`, rebate the rest into escrow)
 - Boss escrow is washed back (80–100% of escrow based on heat)
 - Envelope rewards are distributed
 - The dossier is published
@@ -235,29 +254,40 @@ Output:
 
 ### Settlement (TAO)
 **Proceeds:** `V_hit = 500 TAO`  
-**Taofather Rake (5%):** `25 TAO`
+**Taofather Rake (1.5%):** `7.5 TAO`
 
-**Street Heat:** `I' = 0.50` → Tag **CLEAN**  
+**Street Heat:** `I' = 0.50` → Tag **CLEAN**
+
 Kickback in CLEAN range is `2.00% → 2.75%`.  
-At `I'=0.50`, a midpoint-ish kickback is ~`2.28%`:
+At `I'=0.50`:
 
 $$
 b(0.50)=0.0200 + 0.0075\cdot\frac{0.50-0.35}{0.40}=0.0228125
 $$
 
 **Boss Kickback:** `0.0228125 * 500 = 11.40625 TAO`  
-**Crew Pot:** `500 - 25 - 11.40625 = 463.59375 TAO`
+**Crew Pot:** `500 - 7.5 - 11.40625 = 481.09375 TAO`
 
 **Crew Payouts (base):**
-- Alice: `231.796875 TAO`  
-- Boris: `139.078125 TAO`  
-- Cara: `92.71875 TAO`
+- Alice: `240.546875 TAO`  
+- Boris: `144.328125 TAO`  
+- Cara: `96.21875 TAO`
 
 ### Boss Tribute (MOB-α)
 **Boss Deposit:** `A_boss = 1,000 MOB-α`  
-- Street Tax (5% burn): `50`  
-- Escrow (85%): `850`  
-- Family Vault (10%): `100`
+**Street Tax (finalized):** `τ(0.50)` is in CLEAN range:
+
+$$
+\tau(0.50)=0.0400 - 0.0100\cdot\frac{0.50-0.35}{0.40}=0.03625
+$$
+
+So **Street Tax burned:** `36.25 MOB-α` (3.625%)
+
+**Family Vault (10%):** `100 MOB-α`  
+**Escrow (washable):**
+$$
+A_{esc} = A_{boss}\cdot(1 - 0.10 - \tau(I')) = 1000\cdot(0.86375)=863.75
+$$
 
 ### Street Heat (Impact)
 **Pre / Post Price:** `P0=0.080 → P1=0.036`  
@@ -265,13 +295,13 @@ $$
 **Depth (smoothed):** `L_smooth = 20,000 alpha`  
 **Street Heat:** `I' = 0.50` → 🟢 **CLEAN**
 
-### Wash Result (β_min=0.8)
+### Wash Result (β_min=0.8, ψ=0.5)
 $$
-A_{returned} = 850\cdot (0.8 + 0.2\cdot 0.5) = 765
+A_{returned} = 863.75\cdot (0.8 + 0.2\cdot 0.5)=863.75\cdot 0.9=777.375
 $$
 
 $$
-A_{lost}=85,\quad A_{wash,burn}=42.5,\quad A_{taofather,blessing}=42.5
+A_{lost}=86.375,\quad A_{wash,burn}=43.1875,\quad A_{taofather,blessing}=43.1875
 $$
 
 ### Envelope (MOB-α) *(illustrative)*
@@ -331,12 +361,26 @@ $$
 
 ---
 
-## A2) Boss Deposit Split (Street Tax = 5%)
+## A2) Boss Deposit Split (Street Tax depends on heat)
+
+Let `v = 0.10` be the fixed vault share.
+
+Street tax burned:
 
 $$
-A_{burn,instant} = 0.05 \, A_{boss},\quad
-A_{esc} = 0.85 \, A_{boss},\quad
-A_{vault} = 0.10 \, A_{boss}
+A_{tax} = \tau(I'_{hit})\cdot A_{boss}
+$$
+
+Family Vault:
+
+$$
+A_{vault} = v\cdot A_{boss}
+$$
+
+Escrow:
+
+$$
+A_{esc} = \left(1 - v - \tau(I'_{hit})\right)\cdot A_{boss}
 $$
 
 ---
@@ -345,8 +389,7 @@ $$
 
 From hit proceeds `V_hit`:
 
-- Taofather rake `t = 0.05`
-- Consiglieres `c = 0.00`
+- Taofather rake `t = 0.015`
 - Boss kickback `b(I'_{hit})` (tag-aligned, 1–3%)
 
 $$
@@ -358,8 +401,8 @@ V_{boss} = b(I'_{hit}) \cdot V_{hit}
 $$
 
 $$
-V_{mob} = (1 - t - c - b(I'_{hit}))\cdot V_{hit}
-= (0.95 - b(I'_{hit}))\cdot V_{hit}
+V_{mob} = (1 - t - b(I'_{hit}))\cdot V_{hit}
+= (0.985 - b(I'_{hit}))\cdot V_{hit}
 $$
 
 Mobster `i` base payout:
@@ -452,12 +495,6 @@ $$
 
 ## A6) Tribute, Wash, and the Blessing (Boss Escrow Return)
 
-Escrow:
-
-$$
-A_{esc} = 0.85\,A_{boss}
-$$
-
 Minimum return:
 
 $$
@@ -483,10 +520,10 @@ A_{wash,burn} = \psi\cdot A_{lost},\quad
 A_{taofather,blessing} = (1-\psi)\cdot A_{lost}
 $$
 
-Totals:
+Totals (burn + vault):
 
 $$
-A_{burn,total} = 0.05\,A_{boss} + \psi\cdot (A_{esc}-A_{returned})
+A_{burn,total} = \tau(I'_{hit})\,A_{boss} + \psi\cdot (A_{esc}-A_{returned})
 $$
 
 $$
@@ -500,15 +537,16 @@ $$
 ### For The Taofather (Owner)
 
 **The Rackets (explicit):**
-1) **The Rake (TAO):** `5%` of every hit’s TAO proceeds  
+1) **The Rake (TAO):** `1.5%` of every hit’s TAO proceeds  
 2) **The Blessing (MOB-α):** `(1-ψ)` of Boss escrow loss  
 3) **Family Vault (MOB-α):** `10%` of every Boss deposit  
-4) **Street Tax (burn):** `5%` burn scales with usage (scarcity + lore)
+4) **Street Tax (burn):** `2.5%–5%` burn (cheaper when hits are clean)
 
 ### For Bosses
-- Known cost: Street Tax (5%).
+- Known bounds: Street Tax is always between **2.5% and 5%**.
+- Strong incentive: **clean hits reduce Street Tax** and increase kickback.
 - Bounded risk: escrow return is formula-driven (80–100% of escrow based on heat).
-- Enticed upside: kickback (1–3% of proceeds) increases with tag quality.
+- Upside: kickback (1–3% of proceeds) increases with tag quality.
 
 ### For Mobsters
 - Crew payouts are proportional and transparent.
@@ -517,7 +555,7 @@ $$
 
 ### For Consiglieres
 - Keep the books. Publish the truth. Protect the street from manipulation.
-- Current policy: 0% TAO fee share (optional future governance/compensation).
+- Optional future: governance-defined compensation via envelopes or vault tooling budgets.
 
 ---
 
@@ -532,7 +570,7 @@ A: No. It’s a reference input used for accounting examples.
 **Q: Who can post hits or join crews?**  
 A: Anyone. Bosses sponsor, Mobsters contribute target alpha, Consiglieres validate.
 
-**Q: What makes a hit BOTCHED vs CLEAN vs LEGENDARY?**  
-A: Street Heat thresholds, plus optional integrity checks (anti-gaming).
+**Q: Why does Street Tax depend on heat?**  
+A: To incentivize Bosses to aim for **clean hits**: better heat lowers tax and increases kickback.
 
 ---
