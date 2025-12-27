@@ -537,11 +537,8 @@ $$
 ## Value Proposition
 
 ### For The MOB-α holders
-
-**The Rackets:**
-1) **Family Vault (MOB-α):** `2.5%` of every Boss deposit
-2) **Bosses must buy (MOB-α) to put up hits
-3) **Street Tax (burn):** `2.5%–5%` burn 
+- **Bosses must buy (MOB-α) to put out hits
+- **Street Tax (burn):** `2.5%–5%` burn 
 
 ### For Bosses
 - Known bounds: Street Tax is always between **2.5% and 5%**.
