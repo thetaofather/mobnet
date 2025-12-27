@@ -46,7 +46,7 @@ From `V_hit`, the protocol takes:
 
 - **Taofather Rake:** **1.5%**
 - **Boss Kickback:** **1%–3%** (tag-based) **× a Boss Skin multiplier**
-- The rest goes to the **Pool Payout** (all contributed target alpha sold in the hit)
+- The rest goes to the **Pool Payout** (sold target alpha → TAO)
 
 ### Boss must “show inventory” (target alpha) to open a hit
 
@@ -58,6 +58,17 @@ The Boss is not just a sponsor — they must put target alpha in the pool:
 
 This makes the Boss a real participant in the hit’s execution.
 
+### Critical payout separation
+
+Every hit produces **two** independent payouts:
+
+1) **TAO payout**: from selling pooled target alpha  
+   - **Only** proportional to how much target alpha you contributed to the pool  
+   - **Not** influenced by reputation, MOB-α, or anything else  
+2) **MOB-α Envelope payout**: the “mining” reward  
+   - **Is** influenced by contribution **and** reputation (Rep)  
+   - Paid in MOB-α, not TAO
+
 ---
 
 ## Roles
@@ -66,7 +77,7 @@ This makes the Boss a real participant in the hit’s execution.
 Runs the city. Sets the street rules. Collects the rake.
 
 ### Boss (Hit Sponsor)
-Posts jobs. Deposits MOB-α + real target alpha. Takes bounded wash risk on MOB-α. Earns kickback + pool payout (with slight weighting).
+Posts jobs. Deposits MOB-α + real target alpha. Takes bounded wash risk on MOB-α. Earns kickback + TAO from their target alpha sale.
 
 ### Mobsters (Crew / Miners)
 Bring inventory (target alpha). Get paid in TAO + envelopes (MOB-α). Build reputation.
@@ -89,6 +100,32 @@ Compute Street Heat. Validate settlement math. Publish the dossier and leaderboa
 - **BOTCHED / MESSY / CLEAN / LEGENDARY** — hit tags based on heat/quality  
 - **The Rake** — Taofather’s TAO cut from every hit (**1.5%**)  
 - **Kickback** — Boss bonus from TAO proceeds (**1–3%**, tag-based)
+
+---
+
+## Ranks, Families, and Reputation
+
+This is a game. Your history matters.
+
+### Boss Ranks (by successful sponsorship)
+Associate → Capo → Underboss → Don
+
+### Mobster Ranks (by successful crew runs)
+Runner → Soldier → Made → Enforcer
+
+### Families (Teams)
+Mobsters can affiliate with a **Family** (tag/registry). Families have:
+- leaderboards (volume, heat, win-rate)
+- “made men” lists
+- rivalries (optional narrative layer)
+
+### Mobster Reputation (Rep)
+Reputation is a rolling score (validators compute & publish it) that reflects:
+- participation volume and consistency  
+- quality outcomes (CLEAN/LEGENDARY bias)  
+- penalties for griefing/aborts/bad behavior  
+
+**Rep affects MOB-α Envelopes only** — not TAO.
 
 ---
 
@@ -137,117 +174,36 @@ $$
 
 ---
 
-## Boss Deposits
-
-### A) MOB-α deposit `A_boss` (Street Tax Hold + Family Vault + Washable Escrow)
-
-The MOB-α deposit is the Boss’s **bounded-risk** component.
-
-- **Family Vault (fixed):** **2.5%** of `A_boss`
-- **Street Tax (finalized):** base `2.5%–5%` of `A_boss`, modified by `ρ`
-- **Escrow (washable):** the remainder, returned 80–90% minimum (based on `ρ`) and improved by heat
-
-### B) Target alpha deposit `X_boss` (used in the hit)
-
-This is the Boss’s **“neck on the line”** component.
-
-Two rules apply:
-
-1) **Family Vault skim (in target alpha):** **0.25%–1.00%** of `X_boss`
-2) The rest goes into the hit and is sold
-
----
-
-## Family Vault skim from Boss target alpha
-
-Let `ν_X` be the target-alpha skim rate:
-
-$$
-X_{vault} = \nu_X \cdot X_{boss},\quad \nu_X \in [0.0025,\;0.01]
-$$
-
-Recommended schedule (aligned with tag quality, “clean work costs less”):
-
-| Tag | `ν_X` (Boss target alpha to vault) |
-|---|---:|
-| LEGENDARY | **0.25%** |
-| CLEAN | **0.50%** |
-| MESSY | **0.75%** |
-| BOTCHED | **1.00%** |
-
-Target alpha actually sold for the hit:
-
-$$
-X'_{boss}=X_{boss}-X_{vault}
-$$
-
-> Note: the Family Vault receives this skim **in target alpha units** (not MOB-α). It can be held, auctioned, or used for future protocol mechanics.
-
----
-
-## Boss “Neck on the Line” weighting (Boss target alpha has slightly higher TAO weight)
-
-Because the Boss is sponsoring, facing MOB-α wash risk, and publicly “calling the hit,” their target-alpha contribution gets a small **payout weight advantage** in the TAO pool payout.
-
-Let:
-- `d_i` = Mobster `i` target alpha deposit
-- `X'_{boss}` = Boss target alpha sold in hit (after vault skim)
-- `ω_b` = Boss weight multiplier (slightly > 1)
-
-Recommended:
-
-- `ω_b = 1.10` (10% higher weight)
-- optional range: `1.05 – 1.20`
-
-Weighted total:
-
-$$
-W=\omega_b\cdot X'_{boss}+\sum_i d_i
-$$
-
-Pool payout shares:
-
-$$
-P_{boss,pool} = V_{pool}\cdot \frac{\omega_b\cdot X'_{boss}}{W}
-$$
-
-$$
-P_{i,TAO} = V_{pool}\cdot \frac{d_i}{W}
-$$
-
-**Anti-gaming guardrail (recommended):**  
-Only apply `ω_b > 1` if the Boss is meaningfully exposed:
-
-$$
-X'_{boss} \ge 0.10\cdot\left(X'_{boss}+\sum_i d_i\right)
-$$
-
-If not, set `\omega_b = 1.0` for that hit.
-
----
-
 ## Hit Tags (BOTCHED / MESSY / CLEAN / LEGENDARY)
 
 Every completed job gets a permanent **Hit Tag** on the Hit Board.  
-Tags are determined primarily by **Street Heat** `I'_{hit}`.
+Tags are determined primarily by **Street Heat** `I'_{hit}` (impact adjusted by depth), plus basic execution checks.
 
 ### Tag Thresholds (based on `I'_{hit}`)
 
 Let `I' = I'_{hit}`:
 
 - **BOTCHED**: `I' < 0.15`  
+  *“The streets barely noticed.”*
+
 - **MESSY**: `0.15 ≤ I' < 0.35`  
+  *“A move happened, but it didn’t land clean.”*
+
 - **CLEAN**: `0.35 ≤ I' < 0.75`  
-- **LEGENDARY**: `I' ≥ 0.75`
+  *“Solid impact. Efficient execution.”*
+
+- **LEGENDARY**: `I' ≥ 0.75`  
+  *“Everybody felt it. This one goes on the wall.”*
 
 ---
 
 ## Kickback + Street Tax Schedule (Aligned to Tags)
 
-Boss incentives have three levers:
-1) **Kickback** rises with tag quality  
-2) **Street Tax** falls with tag quality  
-3) **Boss Skin Ratio `ρ`** further improves both (and improves wash floor)
+Boss incentives have two tag-aligned levers:
+1) **Kickback** (TAO, paid out of `V_hit`) rises with tag quality  
+2) **Street Tax** (MOB-α, burned out of `A_boss`) falls with tag quality  
+
+Then the Boss Skin Ratio `ρ` further modifies both (see below).
 
 ### Base Boss Kickback `b(I')` (TAO cut of `V_hit`)
 
@@ -291,7 +247,7 @@ $$
 
 ## Skin Ratio modifiers (how `ρ` reduces risk and increases upside)
 
-Using `ρ_norm` from earlier:
+Using `ρ_norm`:
 
 **Street Tax discount modifier**
 $$
@@ -323,21 +279,63 @@ So serious Bosses (ρ near 2.0) get:
 
 ---
 
+## Boss Deposits (What Exactly Is Required)
+
+### 1) MOB-α deposit `A_boss`
+The MOB-α deposit is the Boss’s bounded-risk component:
+
+- **Family Vault:** `v = 2.5%` of `A_boss`
+- **Street Tax burned:** `τ_eff(I',ρ)·A_boss` (tag + skin adjusted)
+- **Escrow (washable):** remainder, returned per wash formula (bounded by `β_min(ρ)`)
+
+### 2) Target alpha deposit `X_boss`
+The Boss must post real target alpha, which is used in the hit:
+
+- **Family Vault skim (target alpha):** `ν_X·X_boss` where `ν_X ∈ [0.25%, 1.00%]`
+- **Sold in hit:** `X'_boss = X_boss - X_vault`
+
+---
+
+## Family Vault skim from Boss target alpha
+
+Let `ν_X` be the target-alpha skim rate:
+
+$$
+X_{vault} = \nu_X \cdot X_{boss},\quad \nu_X \in [0.0025,\;0.01]
+$$
+
+Recommended schedule (aligned with tag quality, “clean work costs less”):
+
+| Tag | `ν_X` (Boss target alpha to vault) |
+|---|---:|
+| LEGENDARY | **0.25%** |
+| CLEAN | **0.50%** |
+| MESSY | **0.75%** |
+| BOTCHED | **1.00%** |
+
+Target alpha sold for the hit:
+
+$$
+X'_{boss}=X_{boss}-X_{vault}
+$$
+
+---
+
 ## Hit Flow (What Actually Happens)
 
 ### 1) Boss posts a hit
 Boss chooses:
 - Target subnet `T`
-- Pool size `Q_T` (target alpha units)
 - Heat Window (timeout policy)
 - MOB-α deposit `A_boss`
 - Boss target alpha deposit `X_boss`
 
-### 2) Vault skim + Crew forms
-- Vault receives `X_vault = ν_X·X_boss` (target alpha)
+### 2) Crew forms (pool builds)
+- Vault receives target alpha skim `X_vault = ν_X·X_boss`
 - Boss hit contribution becomes `X'_boss = X_boss - X_vault`
 - Mobsters deposit target alpha `d_i`
-- Total sold in hit:
+
+Total target alpha sold in the hit:
 
 $$
 Q_T = X'_{boss} + \sum_i d_i
@@ -350,28 +348,24 @@ Output:
 - `V_hit` TAO proceeds
 - price moves from `P0` to `P1`
 
-### 4) TAO is split and paid
-- Taofather takes rake (**1.5%**)
+### 4) TAO is split and paid (TAO is strict pro-rata by target alpha)
+- Taofather takes rake `t = 1.5%`
 - Boss gets kickback `b_eff(I',ρ)` (tag + skin adjusted)
-- Pool payout pot:
+- Remaining TAO goes to the pool pot:
 
 $$
 V_{pool} = (1 - t - b_{eff}(I',\rho))\cdot V_{hit}
 $$
 
-- Pool payout distribution uses **Boss weight** `ω_b`:
+Then TAO is paid **purely** proportional to target alpha contributed to the hit:
 
 $$
-W=\omega_b\cdot X'_{boss}+\sum_i d_i
+P_{k,TAO}=V_{pool}\cdot \frac{d_k}{Q_T}
 $$
 
-$$
-P_{boss,pool} = V_{pool}\cdot \frac{\omega_b\cdot X'_{boss}}{W}
-$$
-
-$$
-P_{i,TAO} = V_{pool}\cdot \frac{d_i}{W}
-$$
+Where:
+- For Boss, `d_k = X'_boss`
+- For Mobster `i`, `d_k = d_i`
 
 ### 5) The books close (MOB-α side + envelopes)
 - Street Heat is calculated
@@ -386,10 +380,10 @@ $$
 
 If a Mobster sells target alpha solo, they get TAO — but no **Envelope** and no **Rep-weighted upside**.
 
-In a hit, Mobsters can earn:
-1) **TAO** from the pool payout  
-2) **Envelope rewards (MOB-α)** for running hits (mining MOB-α emissions)  
-3) Higher future envelopes via strong **Rep**
+In a hit, Mobsters earn:
+1) **TAO** from the pool sale (strict pro-rata by target alpha)  
+2) **MOB-α Envelopes** for running hits (mining rewards)  
+3) Increasing future envelopes if they maintain strong **Rep**
 
 Even if hit execution pays rake + kickback, the **Envelope** can make hit participation more attractive than solo selling over time.
 
@@ -399,7 +393,10 @@ Even if hit execution pays rake + kickback, the **Envelope** can make hit partic
 
 ## Example Hit Board Card (Dossier)
 
-> Reads like lore, but it still audits.
+> Reads like lore, but it still audits.  
+> **Important:** This example shows **two separate payouts**:
+> 1) **TAO payout** from selling pooled target alpha — **purely pro-rata by contributed target alpha**.  
+> 2) **MOB-α Envelope payout** — paid in MOB-α and **rep-weighted**.
 
 ### 🧾 Case File #071 — “The Dockside Dump”
 **Status:** ✅ Closed  
@@ -409,35 +406,42 @@ Even if hit execution pays rake + kickback, the **Envelope** can make hit partic
 **Heat Window:** 2h 00m  
 **Time to Fill:** 37m
 
-### Deposits
-**Boss MOB-α Deposit:** `A_boss = 1,000 MOB-α`  
+---
+
+### Deposits (what gets sold)
+**Boss MOB-α Deposit:** `A_boss = 1,000 MOB-α` *(used for tax/vault/escrow only — not converted)*  
 **Boss Target Alpha Deposit:** `X_boss = 2,000 alpha_1`
 
-**Mobster Deposits (target alpha):**
-- Alice: `5,000`
-- Boris: `3,000`
-- Cara: `2,000`
+**Mobster Target Alpha Deposits:**
+- Alice: `5,000 alpha_1`
+- Boris: `3,000 alpha_1`
+- Cara: `2,000 alpha_1`
 
-### Target-alpha vault skim (CLEAN → 0.50%)
+---
+
+### Boss Target-Alpha Vault Skim (CLEAN → 0.50%)
 $$
 \nu_X = 0.005,\quad X_{vault} = 0.005\cdot 2000 = 10\;\alpha_1
 $$
 
-So Boss alpha sold:
+Boss alpha sold in the hit:
 
 $$
-X'_{boss} = 2000 - 10 = 1990\;\alpha_1
+X'_{boss} = X_{boss}-X_{vault} = 2000-10 = 1990\;\alpha_1
 $$
 
-Total sold:
+Total target alpha sold:
 
 $$
-Q_T = 1990 + (5000+3000+2000) = 11,990\;\alpha_1
+Q_T = X'_{boss} + (5000+3000+2000) = 11{,}990\;\alpha_1
 $$
 
-### Settlement (TAO)
-**Proceeds:** `V_hit = 500 TAO`  
-**Taofather Rake (1.5%):** `7.5 TAO`
+---
+
+## Settlement Part A — TAO (from the batched sell)
+
+**Hit Proceeds:** `V_hit = 500 TAO`  
+**Taofather Rake (1.5%):** `7.5 TAO`  
 
 **Street Heat:** `I' = 0.50` → Tag **CLEAN**
 
@@ -447,54 +451,90 @@ $$
 b(0.50)=0.0200 + 0.0075\cdot\frac{0.50-0.35}{0.40}=0.0228125
 $$
 
-Assume Boss has solid skin ratio (`ρ_norm ≈ 0.67`), so:
+Assume Boss has solid skin (`\rho_{norm}\approx 0.67`), so:
 
 $$
 m_b(\rho)=0.90+0.20\cdot 0.67\approx 1.033
 $$
 
 $$
-b_{eff}\approx 0.0228125\cdot 1.033 = 0.02357
+b_{eff}\approx \min(0.03,\;0.0228125\cdot 1.033)=0.02357
 $$
 
-**Boss Kickback:** `0.02357 * 500 = 11.785 TAO`
+**Boss Kickback (TAO):**  
+`V_boss,kick = 0.02357 * 500 = 11.785 TAO`
 
-Pool pot:
-
+**Pool TAO pot:**
 $$
 V_{pool} = 500 - 7.5 - 11.785 = 480.715\;TAO
 $$
 
-### Boss-weighted pool payout
-Use `ω_b = 1.10` and Boss eligibility holds (Boss is >10% of raw pool).
+### TAO payouts (strict pro-rata by target alpha)
+- **Boss pool TAO:**  
+  $$P_{boss,pool}=480.715\cdot\frac{1990}{11990}\approx 79.785\;TAO$$
+- **Alice TAO:**  
+  $$P_{Alice,TAO}=480.715\cdot\frac{5000}{11990}\approx 200.465\;TAO$$
+- **Boris TAO:**  
+  $$P_{Boris,TAO}=480.715\cdot\frac{3000}{11990}\approx 120.279\;TAO$$
+- **Cara TAO:**  
+  $$P_{Cara,TAO}=480.715\cdot\frac{2000}{11990}\approx 80.186\;TAO$$
 
-Weighted total:
+**Boss total TAO:**  
+`Boss TAO = kickback + pool payout = 11.785 + 79.785 ≈ 91.57 TAO`
+
+---
+
+## Settlement Part B — MOB-α (Envelope “mining” rewards)
+
+This is a **separate payout** denominated in **MOB-α**, allocated by contribution + reputation.
+
+Assume:
+
+**Envelope Pool (MOB-α):** `E_hit = 4,000 MOB-α`
+
+Mobster envelope allocation (mobsters only):
 
 $$
-W = 1.10\cdot 1990 + (5000+3000+2000)=2189+10000=12189
+c_i=\frac{d_i}{\sum_j d_j},\quad r_i=\frac{Rep_i}{\sum_j Rep_j},\quad
+w_i=c_i^{\gamma}\cdot r_i^{\delta},\quad
+R_{i,MOB\alpha}=E_{hit}\cdot\frac{w_i}{\sum_k w_k}
 $$
 
-Pool payouts:
+### Example Rep-weighted envelope outcome (illustrative)
+Let Rep be:
+- Alice Rep = 60
+- Boris Rep = 30
+- Cara Rep = 10
 
-- Boss pool share: `2189 / 12189 = 17.96%`  
-- Alice: `5000 / 12189 = 41.01%`  
-- Boris: `3000 / 12189 = 24.61%`  
-- Cara: `2000 / 12189 = 16.41%`
+Choose `γ=1`, `δ=1` for illustration.
 
-So:
+Mobster contributions (mobsters total = 10,000):
+- Alice: `c=0.50`
+- Boris: `c=0.30`
+- Cara: `c=0.20`
 
-- **Boss pool payout:** `0.1796 * 480.715 ≈ 86.38 TAO`  
-- **Alice:** `≈ 197.90 TAO`  
-- **Boris:** `≈ 118.30 TAO`  
-- **Cara:** `≈ 78.15 TAO`
+Rep shares (total Rep=100):
+- Alice: `r=0.60`
+- Boris: `r=0.30`
+- Cara: `r=0.10`
 
-**Boss total TAO (kickback + pool payout):**
-- `11.785 + 86.38 ≈ 98.17 TAO`
+Weights `w=c·r`:
+- Alice: `0.30`
+- Boris: `0.09`
+- Cara: `0.02`
+Sum = `0.41`
 
-> This is the key Boss incentive: they earn like a participant (and get a slight weight advantage) *plus* they get kickback.
+Envelope payouts:
+- **Alice MOB-α:** `4000*(0.30/0.41) ≈ 2926.83 MOB-α`
+- **Boris MOB-α:** `4000*(0.09/0.41) ≈ 878.05 MOB-α`
+- **Cara MOB-α:** `4000*(0.02/0.41) ≈ 195.12 MOB-α`
 
-### Boss Tribute (MOB-α)
-**Boss Deposit:** `A_boss = 1,000 MOB-α`  
+> Notice: TAO payouts stayed purely pro-rata by target alpha, but the MOB-α envelope favors high-Rep mobsters. That’s the intended design: **TAO is simple and fair; MOB-α is the incentive/behavior layer.**
+
+---
+
+### Boss MOB-α (Tax + Vault + Wash) *(illustrative)*
+**Boss MOB-α Deposit:** `A_boss = 1,000 MOB-α`  
 **Family Vault (2.5%):** `25 MOB-α`
 
 Street Tax (CLEAN at `I'=0.50`):
@@ -503,7 +543,7 @@ $$
 \tau(0.50)=0.0400 - 0.0100\cdot\frac{0.50-0.35}{0.40}=0.03625
 $$
 
-Assume `ρ_norm≈0.67`:
+Assume `\rho_{norm}\approx 0.67`:
 
 $$
 m_{\tau}(\rho)=1-0.30\cdot 0.67\approx 0.80
@@ -513,48 +553,25 @@ $$
 \tau_{eff}\approx 0.03625\cdot 0.80=0.029
 $$
 
-So **Street Tax burned:** `29.0 MOB-α`
+**Street Tax burned:** `29.0 MOB-α`
 
-**Escrow (washable):**
+Escrow:
+
 $$
 A_{esc}=A_{boss}-A_{vault}-A_{tax}=1000-25-29=946
 $$
 
-### Wash Result (β_min improves with ρ)
+Wash floor:
+
 $$
 \beta_{min}(\rho)=0.80+0.10\cdot 0.67\approx 0.867
 $$
 
-$$
-A_{returned}=A_{esc}\cdot\left(\beta_{min}+(1-\beta_{min})\cdot \min(1,I')\right)
-$$
-
-At `I'=0.50`:
+Returned escrow at `I'=0.50`:
 
 $$
 A_{returned}\approx 946\cdot(0.867+0.133\cdot 0.5)=946\cdot 0.9335\approx 883.7
 $$
-
-Lost:
-
-$$
-A_{lost}\approx 62.3
-$$
-
-Split loss (`ψ=0.5`):
-
-$$
-A_{wash,burn}\approx 31.15,\quad A_{taofather,blessing}\approx 31.15
-$$
-
-### Envelope (MOB-α) *(illustrative, rep-weighted)*
-**Envelope Paid:** `4,000 MOB-α`
-
-Mobsters’ envelope weights depend on:
-- target alpha contribution
-- reputation (Rep)
-
-So a high-Rep mobster can earn more envelope than their raw %.
 
 ---
 
@@ -630,7 +647,7 @@ $$
 
 ---
 
-## A4) TAO Settlement Weights (Boss-weighted pool payout)
+## A4) TAO Settlement (Strict pro-rata by target alpha)
 
 From hit proceeds `V_hit`:
 - Taofather rake `t = 0.015`
@@ -650,28 +667,26 @@ $$
 V_{pool}=(1-t-b_{eff}(I',\rho))\cdot V_{hit}
 $$
 
-Boss-weighted denominator:
+Total target alpha sold:
 
 $$
-W=\omega_b\cdot X'_{boss}+\sum_i d_i
+Q_T=X'_{boss}+\sum_i d_i
 $$
 
-Boss pool payout:
+TAO paid to any participant `k`:
 
 $$
-P_{boss,pool}=V_{pool}\cdot \frac{\omega_b\cdot X'_{boss}}{W}
+P_{k,TAO}=V_{pool}\cdot \frac{d_k}{Q_T}
 $$
 
-Mobster TAO payout:
-
-$$
-P_{i,TAO}=V_{pool}\cdot \frac{d_i}{W}
-$$
+Where:
+- `d_k=X'_{boss}` for the Boss  
+- `d_k=d_i` for Mobster `i`
 
 Boss total TAO:
 
 $$
-P_{boss,total}=V_{boss,kick}+P_{boss,pool}
+P_{boss,total}=V_{boss,kick}+P_{boss,TAO}
 $$
 
 ---
@@ -730,27 +745,10 @@ $$
 
 Allocate within a hit (mobsters only):
 
-Contribution share:
-
 $$
-c_i=\frac{d_i}{\sum_j d_j}
-$$
-
-Reputation share:
-
-$$
-r_i=\frac{Rep_i}{\sum_j Rep_j}
-$$
-
-Weight:
-
-$$
-w_i=c_i^{\gamma}\cdot r_i^{\delta}
-$$
-
-Reward:
-
-$$
+c_i=\frac{d_i}{\sum_j d_j},\quad
+r_i=\frac{Rep_i}{\sum_j Rep_j},\quad
+w_i=c_i^{\gamma}\cdot r_i^{\delta},\quad
 R_{i,MOB\alpha}=E_{hit}\cdot \frac{w_i}{\sum_k w_k}
 $$
 
@@ -810,12 +808,12 @@ $$
 
 ### For Bosses
 - You must post real target alpha — you’re a real participant
-- Your target alpha gets a slight payout weight advantage (`ω_b`)
+- You earn TAO from your target alpha being sold **plus** kickback
 - Higher skin ratio reduces Street Tax and improves wash floor
 - Kickback scales with hit quality and improves with skin
 
 ### For Mobsters
-- TAO payout is transparent
+- TAO payout is transparent and strict pro-rata by target alpha
 - Envelopes (MOB-α) reward hit participation
 - Rep increases envelope weight over time
 
@@ -836,7 +834,7 @@ A: No. It’s a reference input used for accounting examples.
 **Q: Does Mobster reputation affect TAO payouts?**  
 A: No. Rep only affects MOB-α envelopes.
 
-**Q: Why does the Boss get a slight weight boost on their target alpha?**  
-A: They’re taking extra risk (MOB-α wash exposure) and publicly sponsoring the hit. The boost is small and gated by minimum participation.
+**Q: What are the two payouts again?**  
+A: **TAO** comes from selling pooled target alpha (pro-rata). **MOB-α** comes from envelopes (rep-weighted).
 
 ---
