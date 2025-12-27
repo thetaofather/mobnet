@@ -2,7 +2,7 @@
 
 <h1 align="center">The Taofather:   
  
-  Turning dTAO Volatility Into Mafia-Style Hits</h1>
+  Turning dTAO Volatility into Mafia-Style Hits</h1>
 
 
 
