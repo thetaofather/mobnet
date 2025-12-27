@@ -95,7 +95,7 @@ Compute Street Heat. Validate settlement math. Publish the dossier and leaderboa
 
 ---
 
-## Ranks, Families, and Reputation (The Fun Part)
+## Ranks, Families, and Reputation
 
 This is a game. Your history matters.
 
@@ -536,13 +536,12 @@ $$
 
 ## Value Proposition
 
-### For The Taofather (Owner)
+### For The MOB-α holders
 
-**The Rackets (explicit):**
-1) **The Rake (TAO):** `1.5%` of every hit’s TAO proceeds  
-2) **The Blessing (MOB-α):** `(1-ψ)` of Boss escrow loss  
-3) **Family Vault (MOB-α):** `2.5%` of every Boss deposit  
-4) **Street Tax (burn):** `2.5%–5%` burn (cheaper when hits are clean)
+**The Rackets:**
+1) **Family Vault (MOB-α):** `2.5%` of every Boss deposit
+2) **Bosses must buy (MOB-α) to put up hits
+3) **Street Tax (burn):** `2.5%–5%` burn 
 
 ### For Bosses
 - Known bounds: Street Tax is always between **2.5% and 5%**.
