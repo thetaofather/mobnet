@@ -548,18 +548,15 @@ TAO_solo = d_A * P_exec
          = 200 TAO
 MOB-α_solo = 0
 
-#### Option B - Join the hit as a Mobster (same sale price, plus envelopes)
+#### Option B — Join the hit as a Mobster (same sale price, plus envelopes)
 
-Because TAO payouts are strictly pro-rata and we assumed the same realized price,
-Alice’s TAO from the hit sale is effectively the same:
+Because TAO payouts are **strictly pro-rata** and we assumed the same realized price, Alice’s TAO from the hit sale is effectively the same:
 
-- TAO_hit_from_sale ≈ d_A * P_exec
-                 ≈ 200 TAO
+- `TAO_hit_from_sale ≈ d_A * P_exec ≈ 200 TAO`
 
-But as a Mobster, Alice also earns MOB-α Envelope rewards (Rep-weighted). 
-Using the example dossier envelope math:
+But as a Mobster, Alice also earns **MOB-α Envelope** rewards (Rep-weighted). Using the example dossier envelope math:
 
-- MOB-α_envelope(Alice) ≈ 1,878.375 MOB-α
+- `MOB-α_envelope(Alice) ≈ 1,878.375 MOB-α`
 
 ### Comparison:
 | Alice’s choice         | TAO received |   MOB-α received | What influences it                                  |
@@ -831,3 +828,16 @@ A: No. TAO is strict pro-rata by target alpha. Rep only affects MOB-α envelopes
 A: **TAO** (from selling target alpha) and **MOB-α** (envelopes, Rep-weighted).
 
 ---
+
+---
+
+## Disclaimer
+
+This project is provided for informational and entertainment purposes only and does not constitute financial, investment, legal, or tax advice. Participation involves risk, including the potential loss of funds and/or tokens. You the USER are solely responsible for complying with all applicable laws, rules, and regulations in your jurisdiction.
+
+All examples, parameters, and calculations in this document are illustrative and may not reflect real execution outcomes. **There is no guarantee** that participating in hits will be profitable or **more beneficial than selling alpha independently** (or taking no action). Market conditions, liquidity, slippage, fees, timing, validator scoring, and other factors may materially impact results.
+
+**Fiction notice:** This is a fictional, game-themed project. San Taovanni, “The Taofather,” and all related narrative elements (roles, ranks, families, “hits,” “dossiers,” and slang) are **made up for storytelling and gameplay flavor**. Any resemblance to real persons, organizations, events, or criminal activity is purely coincidental and not intended.
+
+Nothing in this README creates any offer, solicitation, warranty, or promise of performance. USE at your own risk.
+
