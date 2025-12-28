@@ -548,11 +548,11 @@ TAO_hit(Alice) = V_pool * (d_A / Q_T)
                = 479.953125 * (5000 / 11990)
                ≈ 200.147258 TAO
 
-Comparison:
-
-Alice’s choice	TAO received	MOB-α received	What influences it
-Sell alpha alone	≈ 200 TAO	0 MOB-α	TAO only depends on sale price + inventory
-Join the hit (Mobster)	≈ 200.15 TAO	+ Envelope MOB-α	TAO: pro-rata alpha only. MOB-α: contribution + Rep
+### Comparison:
+| Alice’s choice         | TAO received |   MOB-α received | What influences it                                  |
+| ---------------------- | -----------: | ---------------: | --------------------------------------------------- |
+| Sell alpha alone       |    ≈ 200 TAO |          0 MOB-α | TAO only depends on sale price + inventory          |
+| Join the hit (Mobster) | ≈ 200.15 TAO | + Envelope MOB-α | TAO: pro-rata alpha only. MOB-α: contribution + Rep |
 
 Key point: the designed extra upside for Mobsters is the MOB-α envelope.
 
