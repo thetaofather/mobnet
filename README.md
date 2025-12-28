@@ -553,12 +553,13 @@ MOB-α_solo = 0
 Because TAO payouts are strictly pro-rata and we assumed the same realized price,
 Alice’s TAO from the hit sale is effectively the same:
 
-TAO_hit_from_sale ≈ d_A * P_exec
+- TAO_hit_from_sale ≈ d_A * P_exec
                  ≈ 200 TAO
 
-But as a Mobster, Alice also earns MOB-α Envelope rewards (Rep-weighted). Using the
-example dossier envelope math:
-MOB-α_envelope(Alice) ≈ 1,878.375 MOB-α
+But as a Mobster, Alice also earns MOB-α Envelope rewards (Rep-weighted). 
+Using the example dossier envelope math:
+
+- MOB-α_envelope(Alice) ≈ 1,878.375 MOB-α
 
 ### Comparison:
 | Alice’s choice         | TAO received |   MOB-α received | What influences it                                  |
