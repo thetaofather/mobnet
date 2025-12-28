@@ -531,22 +531,34 @@ Envelope payouts:
 
 Mobsters earn **two** payouts when they participate in a hit:
 
-1) **TAO** from the batched sale of target alpha — strict pro-rata by contributed alpha  
-2) **MOB-α Envelope** — additional mining reward, weighted by contribution + Rep
+1) **TAO** from the batched sale of target alpha — **strictly pro-rata by contributed alpha**  
+2) **MOB-α Envelope** — additional “mining reward”, weighted by **contribution + Rep**
 
-### Side-by-side: Solo Sell vs Join the Hit (same inventory)
+### Side-by-side: Solo Sell vs Join the Hit (same inventory, same realized price)
 
 Assume Alice owns:
 - `d_A = 5,000 alpha_1`
 
-Assume the effective realized execution price in both cases is the same:
-- `P_exec = 0.040 TAO / alpha_1`
+Assume the market execution outcome is the same in both paths:
+- **Realized execution price:** `P_exec = 0.040 TAO / alpha_1`
 
-Solo sale proceeds:
-TAO_solo = d_A * P_exec = 5000 * 0.040 = 200 TAO
-TAO_hit(Alice) = V_pool * (d_A / Q_T)
-               = 479.953125 * (5000 / 11990)
-               ≈ 200.147258 TAO
+#### Option A — Sell alpha alone (no hit participation)
+TAO_solo = d_A * P_exec
+         = 5000 * 0.040
+         = 200 TAO
+MOB-α_solo = 0
+
+#### Option B - Join the hit as a Mobster (same sale price, plus envelopes)
+
+Because TAO payouts are strictly pro-rata and we assumed the same realized price,
+Alice’s TAO from the hit sale is effectively the same:
+
+TAO_hit_from_sale ≈ d_A * P_exec
+                 ≈ 200 TAO
+
+But as a Mobster, Alice also earns MOB-α Envelope rewards (Rep-weighted). Using the
+example dossier envelope math:
+MOB-α_envelope(Alice) ≈ 1,878.375 MOB-α
 
 ### Comparison:
 | Alice’s choice         | TAO received |   MOB-α received | What influences it                                  |
@@ -555,7 +567,6 @@ TAO_hit(Alice) = V_pool * (d_A / Q_T)
 | Join the hit (Mobster) |    ≈ 200 TAO | + 1,878.38 MOB-α | TAO: pro-rata TAO only. MOB-α: contribution + Rep |
 
 Key point: the designed extra upside for Mobsters is the MOB-α envelope.
-
 
 ---
 
