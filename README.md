@@ -551,8 +551,8 @@ TAO_hit(Alice) = V_pool * (d_A / Q_T)
 ### Comparison:
 | Alice’s choice         | TAO received |   MOB-α received | What influences it                                  |
 | ---------------------- | -----------: | ---------------: | --------------------------------------------------- |
-| Sell alpha alone       |    ≈ 200 TAO |          0 MOB-α | TAO only depends on sale price + inventory          |
-| Join the hit (Mobster) | ≈ 200.15 TAO | + Envelope MOB-α | TAO: pro-rata alpha only. MOB-α: contribution + Rep |
+| Sell alpha alone       |    ≈ 200 TAO |          0 MOB-α | TAO only depends on sale price |
+| Join the hit (Mobster) |    ≈ 200 TAO | + 1,878.38 MOB-α | TAO: pro-rata TAO only. MOB-α: contribution + Rep |
 
 Key point: the designed extra upside for Mobsters is the MOB-α envelope.
 
@@ -563,7 +563,7 @@ Key point: the designed extra upside for Mobsters is the MOB-α envelope.
 
 ## A1) Boss Deposit Rule (Sizing)
 
-Boss MOB-α deposit can be tied to notional hit size:
+Boss MOB-α deposit can be tied to the notional hit size:
 
 - `Q_T`: total target alpha sold in the hit
 - `P0`: pre-hit target alpha price (TAO per alpha)
