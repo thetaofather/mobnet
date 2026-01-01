@@ -24,8 +24,10 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
    - **MOB-α deposit** `A_boss` (Street Tax Hold + Family Vault + Washable Escrow)
    - **Target alpha deposit** `X_boss` (target subnet alpha that will be sold in the hit)
 3) **Mobsters** (miners) join by depositing the target subnet’s alpha into the pool  
-4) Pool fills (or the **Heat Window** ends) → the hit is armed  
-5) The system executes **one batched sell** (“the hit”) of pooled *target alpha only* → **TAO proceeds**  
+4) **Heat Window** ends → the pool is evaluated against the Boss’s **fill thresholds**  
+   - Too little crew → **REFUND**
+   - Enough crew → **ARMED**
+5) If **ARMED**, the protocol executes **one batched sell** (“the hit”) at a **random time** inside an **Execution Window** (anti-gaming)  
 6) TAO proceeds split into: **Taofather Rake**, **Boss Kickback**, **Pool Payout**  
 7) Consiglieres compute **Street Heat** and publish the dossier  
 8) Boss MOB-α escrow is “washed” back (bounded), with a loss split **burn + blessing**  
@@ -66,7 +68,7 @@ When a hit executes, it produces:
 
 From `V_hit`, the protocol takes:
 
-- **Taofather Rake:** `t = 1.5%`
+- **Taofather Rake:** `t = 1.5%` (base; may increase slightly for underfilled execution)
 - **Boss Kickback:** `b_eff(I', ρ)` (tag-based 1–3%, improved by Boss skin)
 - The rest goes to the **Pool Payout** pot (paid strictly pro-rata by target alpha)
 
@@ -92,15 +94,157 @@ Compute Street Heat and Rep. Validate settlement math. Publish dossiers and lead
 
 - **Hit** — one coordinated batched sell of pooled target alpha  
 - **Hit Board / Wall of Jobs** — public list of hits (open + completed)  
-- **Heat Window** — time limit for a pool to fill  
+- **Heat Window** — fill phase (crew deposits are allowed)  
+- **ARMED** — the pool is locked and eligible to execute; inventory can’t change  
+- **Execution Window** — randomized execution phase after arming (exact time unknown)  
+- **Fill Ratio** — how full the pool is at Heat Window close  
+- **Underfilled Execute** — the hit runs even though the pool didn’t fully fill  
 - **Street Heat** — impact score (“did the streets feel it?”)  
 - **Street Tax Hold** — Boss’s held tribute (max-rate hold), finalized after the hit  
 - **Wash** — returning Boss MOB-α escrow (bounded)  
 - **The Blessing** — Taofather’s share of escrow loss  
 - **The Envelope** — MOB-α rewards paid to participants for running hits  
 - **BOTCHED / MESSY / CLEAN / LEGENDARY** — hit tags based on heat/quality  
-- **The Rake** — Taofather’s TAO cut from every hit (`1.5%`)  
+- **The Rake** — Taofather’s TAO cut from every hit (`1.5%` base)  
 - **Kickback** — Boss bonus from TAO proceeds (tag-based, up to `3%`)
+
+---
+
+## Arming + Execution Window (Anti-Gaming)
+
+To prevent timing games (sniping the last second, coordinating external liquidity, etc.), **hits do not execute at a known timestamp**.
+
+We separate time into two phases:
+
+### Phase A — Heat Window (Fill Phase)
+During the Heat Window, deposits are allowed.
+
+- Duration: `T_fill`
+- Deposits allowed: Boss `X_boss`, Mobsters `d_i`
+- At `T_fill` end, the pool is evaluated against **fill thresholds** chosen by the Boss (bounded by protocol limits)
+
+Define:
+- `C` = total pool capacity (in target alpha units)
+- `Q_filled` = total target alpha deposited (Boss + Mobsters, after any vault skims)
+- Fill ratio:
+
+$$
+F=\frac{Q_{filled}}{C}
+$$
+
+### Phase B — Execution Window (Armed Phase)
+If the pool qualifies, it becomes **ARMED**:
+
+- **Inventory is frozen** (no deposits, no withdrawals)
+- The protocol executes **once** at a **random time** inside a window:
+  - Earliest: `E_min` after arming
+  - Latest: `E_max` after arming
+- The **exact** execution time is **not disclosed** ahead of time—only the bounds.
+
+> **Display rule:** The Hit Board shows “ARMED — executes sometime between `E_min` and `E_max`.”
+
+### Verifiable randomness (audit-friendly)
+Let:
+- `B_arm` = chain block when the pool becomes ARMED  
+- `Δ_min`, `Δ_max` = min/max delay in blocks (maps to `E_min/E_max`)  
+- `R(B_arm)` = chain randomness derived from `B_arm` (runtime-provided randomness source)
+
+Then the execution block is:
+
+$$
+B_{exec}=B_{arm}+\Delta_{min}+\Big(R(B_{arm})\ \bmod\ (\Delta_{max}-\Delta_{min}+1)\Big)
+$$
+
+This makes execution **unpredictable** to participants, but **deterministic & auditable** after the fact.
+
+---
+
+## Fill Thresholds + Refund / Underfill Fees
+
+Bosses can choose how strict the crew’s fill requirement is.
+
+We support **two threshold modes**:
+
+### Mode 1 (Recommended): 2 thresholds → 3 outcomes
+Boss chooses:
+- `\theta_{refund}` (refund threshold)
+- `\theta_{full}` (full threshold)
+
+Protocol requires:
+
+$$
+0 < \theta_{refund} < \theta_{full} \le 1
+$$
+
+Outcomes at Heat Window close:
+
+- If `F < \theta_{refund}` → **REFUND**
+- If `\theta_{refund} \le F < \theta_{full}` → **EXECUTE (NOT FULL)** (arms and executes, but Boss pays an extra fee)
+- If `F \ge \theta_{full}` → **EXECUTE (NORMAL)**
+
+**Suggested defaults (ship-it preset):**
+- `\theta_{refund}=0.40`
+- `\theta_{full}=0.90`
+
+### Mode 2 (Advanced): 3 thresholds → “tight control”
+Boss chooses:
+- `\theta_{refund}` (refund)
+- `\theta_{partial}` (allow underfilled execution)
+- `\theta_{full}` (normal execution)
+
+With:
+
+$$
+0 < \theta_{refund} < \theta_{partial} < \theta_{full} \le 1
+$$
+
+Outcomes:
+- `F < \theta_{refund}` → REFUND  
+- `\theta_{refund} \le F < \theta_{partial}` → REFUND (Boss wanted more crew before arming)  
+- `\theta_{partial} \le F < \theta_{full}` → EXECUTE (NOT FULL)  
+- `F \ge \theta_{full}` → EXECUTE (NORMAL)
+
+### Boss fee schedule (slightly higher fees for REFUND or NOT FULL)
+We add small, Boss-only penalties to prevent “free option” spam.
+
+#### A) REFUND fee (Boss-only)
+If the pool refunds, deposits are returned, but the Boss pays a **cancellation fee** in MOB-α:
+
+$$
+A_{cancel}=f_{cancel}\cdot A_{boss}
+$$
+
+Recommended:
+- `f_{cancel} = 0.50%` (and optionally a minimum absolute floor)
+
+#### B) Underfilled execution fee (Boss-only)
+If the hit executes but is not full, we add a small penalty that scales with how underfilled it is.
+
+Define underfill severity:
+
+$$
+U=\text{clamp}\left(\frac{\theta_{full}-F}{\theta_{full}-\theta_{refund}},\;0,\;1\right)
+$$
+
+**Option 1 (recommended): Underfill rake bump (TAO-side, simple audit)**
+Let base rake be `t = 1.5%`. For underfilled execution:
+
+$$
+t_{eff}=t+\Delta t\cdot U
+$$
+
+Recommended: `\Delta t = 0.50%` max bump.
+
+**Option 2 (optional): Underfill burn (MOB-α-side)**
+Add an extra Boss burn:
+
+$$
+A_{under}=f_{under}\cdot U\cdot A_{boss}
+$$
+
+Recommended: `f_{under} = 0.50%` (max when `U=1`).
+
+> **Design intent:** Bosses can allow underfilled execution, but it should cost *slightly more* than a clean, full hit.
 
 ---
 
@@ -275,10 +419,14 @@ $$
 - After the hit, the final Street Tax burned is computed using `τ_eff(I',ρ)`.
 - Any held amount above the final tax is **rebated back into escrow**.
 
+**Refund / Underfill fees (anti-spam + accountability):**
+- See **Fill Thresholds + Refund / Underfill Fees** above.
+- Fees are paid by the **Boss**, not by Mobsters.
+
 ### 2) Target alpha deposit `X_boss` (boss must be a participant)
 
 - **Family Vault skim (target alpha):** `ν_X·X_boss` where `ν_X ∈ [0.25%, 1.00%]`
-- **Sold in hit:** `X'_boss = X_boss - X_vault`
+- **Sold in hit (if ARMED):** `X'_boss = X_boss - X_vault`
 
 ---
 
@@ -312,11 +460,13 @@ $$
 ### 1) Boss posts a hit
 Boss chooses:
 - Target subnet `T`
-- Heat Window (timeout policy)
+- Heat Window duration `T_fill`
+- Fill thresholds (`θ_refund`, `θ_full`) (and optional `θ_partial`)
+- Execution Window bounds (`E_min`, `E_max`)
 - MOB-α deposit `A_boss`
 - Boss target alpha deposit `X_boss`
 
-### 2) Crew forms (pool builds)
+### 2) Crew forms (Heat Window: deposits allowed)
 Vault skim:
 
 $$
@@ -331,31 +481,45 @@ $$
 
 Mobsters deposit target alpha `d_i`.
 
-Total target alpha sold in the hit:
+Total filled inventory (pre-arming):
 
 $$
-Q_{T}=X'_{boss}+\sum_{i} d_i
+Q_{filled}=X'_{boss}+\sum_i d_i
 $$
 
-### 3) The hit executes
+Fill ratio:
+
+$$
+F=\frac{Q_{filled}}{C}
+$$
+
+### 3) Heat Window closes → REFUND or ARMED
+At Heat Window close, evaluate `F` against thresholds.
+
+- **REFUND:** return `d_i` to Mobsters and `X_boss` (net any vault skim policy you choose), apply Boss cancellation fee `A_cancel`
+- **ARMED:** freeze inventory (no more deposits/withdrawals), schedule randomized execution inside `E_min..E_max`
+
+### 4) The hit executes (Execution Window: exact time unknown)
 All pooled target alpha is sold in a single batched execution.
 
 Output:
 - `V_hit` TAO proceeds
 - price moves from `P0` to `P1`
 
-### 4) TAO is split and paid (strict pro-rata by target alpha)
+### 5) TAO is split and paid (strict pro-rata by target alpha)
+
+If underfilled penalties are enabled, use `t_eff`; otherwise `t_eff=t`.
 
 Pool pot:
 
 $$
-V_{pool}=(1-t-b_{eff}(I',\rho))\cdot V_{hit}
+V_{pool}=(1-t_{eff}-b_{eff}(I',\rho))\cdot V_{hit}
 $$
 
 TAO payout:
 
 $$
-P_{k,TAO}=V_{pool}\cdot \frac{d_k}{Q_T}
+P_{k,TAO}=V_{pool}\cdot \frac{d_k}{Q_{filled}}
 $$
 
 Boss total TAO:
@@ -364,10 +528,11 @@ $$
 P_{boss,total}=b_{eff}(I',\rho)\cdot V_{hit}+P_{boss,TAO}
 $$
 
-### 5) The books close (MOB-α side + envelopes)
+### 6) The books close (MOB-α side + envelopes)
 - Street Heat is calculated
 - Street Tax is finalized
 - Boss escrow is washed back (bounded)
+- Boss fees (refund or underfill) are applied
 - Envelopes are distributed (Rep-weighted)
 - Dossier is published
 
@@ -405,7 +570,7 @@ Total sold:
 ## Settlement (TAO) — **strict pro-rata by target alpha**
 
 **Proceeds:** `V_hit = 500 TAO`  
-**Taofather Rake (1.5%):** `7.5 TAO`
+**Taofather Rake (base 1.5%):** `7.5 TAO`
 
 **Street Heat:** `I' = 0.50` → Tag CLEAN
 
@@ -638,10 +803,16 @@ $$
 
 ## A4) TAO Settlement
 
-Taofather rake:
+Taofather rake (base):
 
 $$
 V_{taofather}=t\cdot V_{hit}
+$$
+
+Underfilled execution rake (optional):
+
+$$
+t_{eff}=t+\Delta t\cdot U
 $$
 
 Boss kickback:
@@ -653,7 +824,7 @@ $$
 Pool pot:
 
 $$
-V_{pool}=(1-t-b_{eff}(I',\rho))\cdot V_{hit}
+V_{pool}=(1-t_{eff}-b_{eff}(I',\rho))\cdot V_{hit}
 $$
 
 TAO paid to any participant `k`:
@@ -792,6 +963,7 @@ $$
 - Earn TAO from target alpha sale **plus** kickback
 - Higher `ρ` reduces Street Tax and improves wash floor
 - Street Tax Hold rebates excess hold back into escrow
+- Boss chooses thresholds + execution window bounds (with penalties for refund / underfill)
 
 ### For Mobsters
 - TAO payout is strict pro-rata by target alpha
@@ -801,6 +973,13 @@ $$
 ### For Consiglieres
 - Publish heat, payouts, and Rep
 - Protect the streets from manipulation
+
+### For the Network (Accountability & Rug Resistance)
+- **Faster signal on weak subnets:** creates a repeatable, public stress-test mechanism that makes underperforming or low-integrity subnets easier to identify sooner.  
+- **Discourages “rug” behavior:** raises the cost of hype-only subnets by forcing faster price discovery and public outcomes that are hard to fake.  
+- **Public, auditable transparency:** every hit produces an on-chain / ledger-style record of inventory moved, proceeds, and impact—building a dataset that helps the ecosystem evaluate subnets over time.  
+- **Helps expedite pruning of bad subnets:** when a subnet repeatedly shows poor participation, thin liquidity, or negative outcomes, stakeholders and governance get clearer evidence to justify de-weighting, pruning, or reallocating attention to stronger subnets.  
+- **Pushes incentives toward real performance:** strong subnets tend to be more resilient; weak subnets are pressured to improve, communicate transparently, or exit.
 
 ---
 
@@ -818,6 +997,18 @@ A: No. Hits sell **only target subnet alpha**. MOB-α is used for deposits, burn
 **Q: Who can post hits or join crews?**  
 A: Anyone.
 
+**Q: When exactly does an ARMED hit execute?**  
+A: Once ARMED, it executes at a **random time** inside the disclosed **Execution Window bounds** (`E_min..E_max`). The exact time is not shown in advance.
+
+**Q: Can someone deposit right before execution to game it?**  
+A: No. Once the pool is **ARMED**, inventory is frozen (no deposits/withdrawals). Execution time is also randomized.
+
+**Q: Why can a Boss allow “execute-not-full”?**  
+A: It lets Bosses trade “speed and certainty” for “crew fullness.” Underfilled execution costs the Boss **slightly higher fees** to discourage spam and sloppy jobs.
+
+**Q: Who pays refund / underfill penalties?**  
+A: The **Boss** only. Mobsters don’t pay penalties for a refund; their inventory is returned.
+
 **Q: Why does Street Tax depend on heat?**  
 A: To incentivize Bosses to aim for **clean hits**: better heat lowers tax and increases kickback.
 
@@ -826,8 +1017,6 @@ A: No. TAO is strict pro-rata by target alpha. Rep only affects MOB-α envelopes
 
 **Q: What are the two payouts again?**  
 A: **TAO** (from selling target alpha) and **MOB-α** (envelopes, Rep-weighted).
-
----
 
 ---
 
@@ -840,4 +1029,3 @@ All examples, parameters, and calculations in this document are illustrative and
 **Fiction notice:** This is a fictional, game-themed project. San Taovanni, “The Taofather,” and all related narrative elements (roles, ranks, families, “hits,” “dossiers,” and slang) are **made up for storytelling and gameplay flavor**. Any resemblance to real persons, organizations, events, or criminal activity is purely coincidental and not intended.
 
 Nothing in this README creates any offer, solicitation, warranty, or promise of performance. USE at your own risk.
-
