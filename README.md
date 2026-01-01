@@ -247,6 +247,25 @@ Recommended: `f_{under} = 0.50%` (max when `U=1`).
 
 ---
 
+## Boss Hit Submission (Checklist)
+
+To post a hit, a Boss must specify **timing**, **thresholds**, and **both deposits**:
+
+- **Target subnet `T`** (the `alpha_T` being sold)
+- **Heat Window**: `T_fill` and **pool capacity** `C`
+- **Fill thresholds** (refund vs execute-not-full vs normal):
+  - Mode 1 (recommended): `θ_refund`, `θ_full`
+  - Mode 2 (advanced): `θ_refund`, `θ_partial`, `θ_full`
+- **Execution Window bounds** (randomized execution after arming):
+  - `E_min`, `E_max`
+- **Boss deposits**:
+  - `A_boss` (MOB-α deposit)
+  - `X_boss` (target alpha deposit)
+
+> Full submission form: see **Appendix B — Boss Hit Submission Template**.
+
+---
+
 ## Ranks, Families, and Reputation
 
 ### Boss Ranks (by successful sponsorship)
@@ -947,6 +966,132 @@ $$
 $$
 A_{taofather,blessing}=(1-\psi)\cdot A_{lost}
 $$
+
+---
+
+# Appendix B — Boss Hit Submission Template (Create a Job on the Hit Board)
+
+Use this template when posting a hit. It captures every required input: deposits, thresholds, and the (randomized) execution window.
+
+---
+
+## 1) Job Identity
+- **Hit Title / Codename:**  
+- **Target Subnet `T`:** (netuid + name/symbol if available)  
+- **Target Alpha Asset:** `alpha_T`  
+- **Reason / Notes (optional):**  
+
+---
+
+## 2) Time Rules (Fill → Armed → Random Execution)
+
+### Heat Window (Fill Phase)
+- **Heat Window Duration `T_fill`:** (e.g., `2h 00m`)  
+- **Pool Capacity `C` (target alpha units):** (e.g., `50,000 alpha_T`)  
+- **Minimum Absolute Inventory `Q_min_abs` (optional, recommended):** (e.g., `5,000 alpha_T`)  
+
+### Execution Window (Armed Phase)
+- **Earliest Execution Delay `E_min`:** (e.g., `10m`)  
+- **Latest Execution Delay `E_max`:** (e.g., `45m`)  
+
+> Once ARMED, the hit executes at a random time inside `E_min..E_max`. Inventory is frozen.
+
+---
+
+## 3) Fill Thresholds (Refund vs Underfilled Execute vs Normal)
+
+Choose one mode:
+
+### Mode 1 (Recommended): 2 thresholds → 3 outcomes
+- **Refund Threshold `θ_refund`:** (suggest `0.40`)  
+- **Full Threshold `θ_full`:** (suggest `0.90`)  
+
+Outcomes at Heat Window close:
+- If `F < θ_refund` → **REFUND**
+- If `θ_refund ≤ F < θ_full` → **EXECUTE (NOT FULL)**
+- If `F ≥ θ_full` → **EXECUTE (NORMAL)**
+
+### Mode 2 (Advanced): 3 thresholds → tight control
+- **Refund Threshold `θ_refund`:**  
+- **Partial-Execute Threshold `θ_partial`:**  
+- **Full Threshold `θ_full`:**  
+
+Constraints:
+- `0 < θ_refund < θ_partial < θ_full ≤ 1`
+
+Outcomes:
+- If `F < θ_refund` → REFUND  
+- If `θ_refund ≤ F < θ_partial` → REFUND  
+- If `θ_partial ≤ F < θ_full` → EXECUTE (NOT FULL)  
+- If `F ≥ θ_full` → EXECUTE (NORMAL)  
+
+---
+
+## 4) Required Deposits (Boss Must Post Both)
+
+### (A) MOB-α Deposit
+- **Boss MOB-α Deposit `A_boss`:** `__________ MOB-α`
+
+Notes:
+- **Family Vault (fixed):** `v = 2.5%` of `A_boss`
+- **Street Tax:** `τ_eff(I', ρ) * A_boss` (final after hit)
+- **Street Tax Hold:** protocol temporarily holds max tax (5%) then rebates excess after final tax is computed
+- **Escrow:** remainder is washable with floor `β_min(ρ)`
+
+#### Refund / Underfill fees (Boss-paid)
+- **Refund fee factor `f_cancel`:** (default `0.50%` of `A_boss`)  
+- **Underfilled execution rake bump:** `t_eff = t + Δt * U`  
+  - **Base rake `t`:** `1.5%`
+  - **Max bump `Δt`:** (default `0.50%`)  
+- *(Optional)* **Underfill burn factor `f_under`:** (default `0.50%`, applied as `f_under * U * A_boss`)
+
+### (B) Target Alpha Deposit
+- **Boss Target Alpha Deposit `X_boss`:** `__________ alpha_T`
+
+Notes:
+- **Vault skim on boss target alpha:** `X_vault = ν_X * X_boss`
+- **Boss sold amount:** `X'_boss = X_boss - X_vault`
+- **Recommended `ν_X` schedule:** (LEGENDARY 0.25%, CLEAN 0.50%, MESSY 0.75%, BOTCHED 1.00%)
+
+---
+
+## 5) Boss “Skin Ratio” (Optional to show, recommended)
+
+Accounting inputs (for transparency):
+- **Reference MOB-α street price `p_alpha`:** `______ TAO / MOB-α` *(accounting only)*
+- **Pre-hit target alpha price `P0`:** `______ TAO / alpha_T`
+
+Compute:
+- `N_A = A_boss * p_alpha`
+- `N_X = X_boss * P0`
+- `ρ = N_X / N_A`
+- `ρ_norm = clamp((ρ - 0.50)/(2.00 - 0.50), 0, 1)`
+
+---
+
+## 6) Settlement Defaults (Unless Protocol Overrides)
+
+- **Taofather base rake `t`:** `1.5%`
+- **Boss kickback:** `b_eff(I', ρ)` (tag-based up to `3%`, skin-adjusted)
+- **Street Tax:** `τ_eff(I', ρ)` (tag-based, skin-discounted)
+- **Wash floor:** `β_min(ρ) = 0.80 + 0.10 * ρ_norm`
+
+---
+
+## 7) Final Confirmation (What I’m Posting)
+
+**I am posting a hit with:**
+- Target subnet `T = ____`
+- `T_fill = ____`, `C = ____ alpha_T`, (optional `Q_min_abs = ____`)
+- Threshold mode: Mode 1 / Mode 2
+- Thresholds: `θ_refund = ____`, `θ_full = ____` (and optional `θ_partial = ____`)
+- Execution window: `E_min = ____`, `E_max = ____`
+- Deposits: `A_boss = ____ MOB-α`, `X_boss = ____ alpha_T`
+
+**Acknowledgements:**
+- Once **ARMED**, inventory is frozen and execution time is randomized within the Execution Window.
+- If the pool **REFUNDS**, Mobsters get deposits back and I (the Boss) pay the cancellation fee.
+- If the pool executes **NOT FULL**, I (the Boss) pay slightly higher fees (e.g., underfill rake bump / optional underfill burn).
 
 ---
 
