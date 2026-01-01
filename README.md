@@ -1,7 +1,6 @@
 <img width="938" height="690" alt="image (4)" src="https://github.com/user-attachments/assets/1009e9db-96c9-4279-ace3-6544629842d3" />
 
-<h1 align="center">The Taofather</h1>
-<h3 align="center">Turning dTAO Volatility into Mob Hits</h3>
+<h1 align="center">Turning dTAO Volatility into Mob Hits</h1>
 
 ---
 
