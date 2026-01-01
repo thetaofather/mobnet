@@ -12,8 +12,6 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
 
 > **Important:** Any TAO-equivalent examples use a reference input `p_alpha` for accounting. It’s not a peg and not a guarantee — it’s just the “street price” input used to compare values.
 
----
-
 ## Table of Contents
 
 - [Intro](#intro)
