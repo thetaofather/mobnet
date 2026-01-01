@@ -4,6 +4,18 @@
 
 ---
 
+## Intro
+
+Welcome to **San Taovanni** — a mob-run district inside Tensor City.
+
+**The Taofather** is a mob-themed Bittensor subnet where volatility becomes a public game: **Bosses** post hits, **Mobsters** form crews, and **Consiglieres** keep the books.
+
+The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs, earn envelopes, climb ranks, and build a reputation that lives on the **Hit Board**.
+
+> **Important:** Any TAO-equivalent examples use a reference input `p_alpha` for accounting. It’s not a peg and not a guarantee — it’s just the “street price” input used to compare values.
+
+---
+
 ## Table of Contents
 
 - [Intro](#intro)
@@ -70,18 +82,6 @@
   - [For the Network (Accountability & Rug Resistance)](#for-the-network-accountability--rug-resistance)
 - [FAQ](#faq)
 - [Disclaimer](#disclaimer)
-
----
-
-## Intro
-
-Welcome to **San Taovanni** — a mob-run district inside Tensor City.
-
-**The Taofather** is a mob-themed Bittensor subnet where volatility becomes a public game: **Bosses** post hits, **Mobsters** form crews, and **Consiglieres** keep the books.
-
-The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs, earn envelopes, climb ranks, and build a reputation that lives on the **Hit Board**.
-
-> **Important:** Any TAO-equivalent examples use a reference input `p_alpha` for accounting. It’s not a peg and not a guarantee — it’s just the “street price” input used to compare values.
 
 ---
 
