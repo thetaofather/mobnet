@@ -2,8 +2,6 @@
 
 <h1 align="center">Turning dTAO Volatility into Mob Hits</h1>
 
----
-
 ## Intro
 
 Welcome to **San Taovanni** — a mob-run district inside Tensor City.
