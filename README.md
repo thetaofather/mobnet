@@ -50,11 +50,11 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
 - [Hit Tags (BOTCHED / MESSY / CLEAN / LEGENDARY)](#hit-tags-botched--messy--clean--legendary)
 - [Kickback + Street Tax Schedule (Aligned to Tags)](#kickback--street-tax-schedule-aligned-to-tags)
   - [Base Boss Kickback b(I')](#base-boss-kickback-bi)
-  - [Base Street Tax τ(I')](#base-street-tax-τi)
+  - [Base Street Tax](#base-street-tax)
 - [Skin Ratio Modifiers](#skin-ratio-modifiers)
   - [Street Tax discount modifier](#street-tax-discount-modifier)
   - [Kickback multiplier](#kickback-multiplier)
-  - [Wash minimum floor (improves with ρ)](#wash-minimum-floor-improves-with-ρ)
+  - [Wash minimum floor](#wash-minimum-floor)
 - [Boss Deposits (What Exactly Is Required)](#boss-deposits-what-exactly-is-required)
   - [1) MOB-α deposit A_boss (bounded-risk deposit)](#1-mob-α-deposit-a_boss-bounded-risk-deposit)
   - [2) Target alpha deposit X_boss (boss must be a participant)](#2-target-alpha-deposit-x_boss-boss-must-be-a-participant)
@@ -530,7 +530,7 @@ b(I')=
 \end{cases}
 $$
 
-### Base Street Tax `τ(I')`
+### Base Street Tax`
 
 | Tag | Street Heat `I'` | Street Tax `τ(I')` |
 |---|---:|---:|
@@ -573,7 +573,7 @@ $$
 b_{eff}(I',\rho)=\min(0.03,\; b(I')\cdot m_{b}(\rho))
 $$
 
-### Wash minimum floor (improves with `ρ`)
+### Wash minimum floor
 
 $$
 \beta_{min}(\rho)=0.80+0.10\cdot \rho_{norm}
