@@ -91,12 +91,14 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
 4) **Heat Window** ends → the pool is evaluated against the Boss’s **fill thresholds**  
    - Too little crew → **REFUND**
    - Enough crew → **ARMED**
-5) If **ARMED**, the protocol executes **one batched sell** (“the hit”) at a **random time** inside an **Execution Window** (anti-gaming)  
-6) TAO proceeds split into: **Taofather Rake**, **Boss Kickback**, **Pool Payout**  
-7) Consiglieres compute **Street Heat** and publish the dossier  
-8) Boss MOB-α escrow is “washed” back (bounded), with a loss split **burn + blessing**  
-9) Participants earn **Envelope** rewards (MOB-α) weighted by **contribution + reputation**  
-10) The job becomes lore: **BOTCHED / MESSY / CLEAN / LEGENDARY**, ranks, Families, leaderboards
+5) If **ARMED**, the protocol executes **one batched sell** (“the hit”) at a **random time** inside an **Execution Window** (anti-gaming)
+   - Earliest: **15 minutes** after arming
+   - Latest: **7200 minutes (5 days)** after arming
+7) TAO proceeds split into: **Taofather Rake**, **Boss Kickback**, **Pool Payout**  
+8) Consiglieres compute **Street Heat** and publish the dossier  
+9) Boss MOB-α escrow is “washed” back (bounded), with a loss split **burn + blessing**  
+10) Participants earn **Envelope** rewards (MOB-α) weighted by **contribution + reputation**  
+11) The job becomes lore: **BOTCHED / MESSY / CLEAN / LEGENDARY**, ranks, Families, leaderboards
 
 ---
 
@@ -196,16 +198,18 @@ $$
 F=\frac{Q_{filled}}{C}
 $$
 
+## Arming + Execution Window (Anti-Gaming)
+
 ### Phase B — Execution Window (Armed Phase)
 If the pool qualifies, it becomes **ARMED**:
 
 - **Inventory is frozen** (no deposits, no withdrawals)
-- The protocol executes **once** at a **random time** inside a window:
-  - Earliest: `E_min` after arming
-  - Latest: `E_max` after arming
+- The protocol executes **once** at a **random time** inside a fixed window:
+  - **E_min = 15 minutes**
+  - **E_max = 7200 minutes (5 days)**
 - The **exact** execution time is **not disclosed** ahead of time—only the bounds.
 
-> **Display rule:** The Hit Board shows “ARMED — executes sometime between `E_min` and `E_max`.”
+> **Display rule:** The Hit Board shows “ARMED — executes sometime between **+15m** and **+7200m** after arming.”
 
 ### Verifiable randomness (audit-friendly)
 Let:
@@ -545,7 +549,6 @@ Boss chooses:
 - Target subnet `T`
 - Heat Window duration `T_fill`
 - Fill thresholds (`θ_refund`, `θ_full`) (and optional `θ_partial`)
-- Execution Window bounds (`E_min`, `E_max`)
 - MOB-α deposit `A_boss`
 - Boss target alpha deposit `X_boss`
 
@@ -1207,7 +1210,7 @@ A: No. Hits sell **only target subnet alpha**. MOB-α is used for deposits, burn
 A: Anyone.
 
 **Q: When exactly does an ARMED hit execute?**  
-A: Once ARMED, it executes at a **random time** inside the disclosed **Execution Window bounds** (`E_min..E_max`). The exact time is not shown in advance.
+A: Once ARMED, it executes at a **random time** between **15 minutes** and **7200 minutes (5 days)** after arming. The exact time is not shown in advance.
 
 **Q: Can someone deposit right before execution to game it?**  
 A: No. Once the pool is **ARMED**, inventory is frozen (no deposits/withdrawals). Execution time is also randomized.
