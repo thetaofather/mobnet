@@ -26,6 +26,13 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
   - [Phase A — Heat Window (Fill Phase)](#phase-a--heat-window-fill-phase)
   - [Phase B — Execution Window (Armed Phase)](#phase-b--execution-window-armed-phase)
   - [Verifiable randomness (audit-friendly)](#verifiable-randomness-audit-friendly)
+- [Hit Board Visibility (Obfuscated Until Execution)](#hit-board-visibility-obfuscated-until-execution)
+  - [What the public can see (before execution)](#what-the-public-can-see-before-execution)
+  - [What is hidden (until after execution)](#what-is-hidden-until-after-execution)
+  - [After execution (full transparency)](#after-execution-full-transparency)
+- [Example Hit Board Cards (Pre vs Post)](#example-hit-board-cards-pre-vs-post)
+  - [PRE-EXECUTION (OBFUSCATED) — Public Hit Board Card](#pre-execution-obfuscated--public-hit-board-card)
+  - [POST-EXECUTION (FULL DOSSIER) — Public After the Hit Executes](#post-execution-full-dossier--public-after-the-hit-executes)
 - [Fill Thresholds + Refund / Underfill Fees](#fill-thresholds--refund--underfill-fees)
   - [Mode 1 (Recommended): 2 thresholds → 3 outcomes](#mode-1-recommended-2-thresholds--3-outcomes)
   - [Mode 2 (Advanced): 3 thresholds → “tight control”](#mode-2-advanced-3-thresholds--tight-control)
@@ -210,6 +217,88 @@ If the pool qualifies, it becomes **ARMED**:
 - The **exact** execution time is **not disclosed** ahead of time—only the bounds.
 
 > **Display rule:** The Hit Board shows “ARMED — executes sometime between **+15m** and **+7200m** after arming.”
+
+## Hit Board Visibility (Obfuscated Until Execution)
+
+To reduce gaming, coordination, and front-running, **active hits are obfuscated until the moment they execute**.
+
+### What the public can see (before execution)
+While a hit is **OPEN (filling)** or **ARMED (scheduled)**, the public Hit Board shows only:
+
+- **Target subnet** (e.g., `T=1`)
+- **Reason / thesis** (plain-English justification provided by the Boss)
+- **Status**: OPEN or ARMED
+- **Heat Window duration** (`T_fill`)
+- **Execution Window bounds** (`E_min..E_max`) *(optional; can be shown as “executes within X–Y after arming”)*
+
+> The goal is to communicate *why* a hit exists without revealing execution-critical details.
+
+### What is hidden (until after execution)
+Until the hit has executed, the following details are **not shown publicly**:
+
+- Pool capacity `C` and current fill ratio `F`
+- Exact thresholds (`θ_refund`, `θ_partial`, `θ_full`)
+- Deposits / inventory (Boss `X_boss`, Mobsters `d_i`, and totals)
+- Any per-wallet participation data
+- The exact execution time (only the window bounds may be shown)
+
+### After execution (full transparency)
+Once the hit executes, the dossier becomes public and includes:
+
+- Final inventory sold (`Q_filled`), participation breakdown, and proceeds `V_hit`
+- Rake, kickback, pool pot, and strict pro-rata TAO payouts
+- Street Heat `I'`, tag (BOTCHED/MESSY/CLEAN/LEGENDARY)
+- Any refund / underfill penalties applied to the Boss
+- The randomness proof / audit trail for `B_exec`
+
+**Design intent:** *Hide what can be gamed, publish what can be audited.*
+
+## Example Hit Board Cards (Pre vs Post)
+
+Below is the same hit shown in two phases:
+- **Pre-execution (Obfuscated):** what the public sees while OPEN/ARMED
+- **Post-execution (Dossier):** what becomes public after the hit executes
+
+---
+
+## ✅ PRE-EXECUTION (OBFUSCATED) — Public Hit Board Card
+
+### 🧾 Case File #071 — “The Dockside Dump.”
+**Status:** 🟡 ARMED  
+**Target:** Subnet `T=1` (`alpha_1`)  
+**District:** San Taovanni — The Docks  
+
+**Reason (Boss Thesis):**  
+> “This subnet has shown repeated signs of thin liquidity and hype-driven pricing. The hit is intended to force faster price discovery and produce an auditable stress-test record.”
+
+**Heat Window:** `T_fill = 2h 00m`  
+**Execution:** Executes at a **random time** within the **Execution Window** after arming *(exact time not disclosed)*
+
+**Public Notes:**
+- Pool details are **obfuscated** until execution to reduce gaming/front-running.
+- Full settlement math + participation details are published automatically after execution.
+
+**Hidden Until Execution (not shown):**
+- Pool capacity `C`, fill ratio `F`, thresholds (`θ_refund/θ_partial/θ_full`)
+- Boss + Mobster inventory amounts (`X_boss`, `d_i`, totals)
+- Wallet-level participation and any timing indicators
+
+---
+
+## ✅ POST-EXECUTION (FULL DOSSIER) — Public After the Hit Executes
+
+> This is what is published automatically once the hit is completed.
+
+### 🧾 Case File #071 — “The Dockside Dump.”
+**Status:** ✅ Closed  
+**Tag:** 🟢 CLEAN  
+**Target:** Subnet `T=1` (`alpha_1`)  
+**District:** San Taovanni — The Docks  
+**Heat Window:** 2h 00m  
+**Time to Fill:** 37m  
+**Execution:** Randomized inside window (audit proof included)
+
+---
 
 ### Verifiable randomness (audit-friendly)
 Let:
