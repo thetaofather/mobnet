@@ -530,7 +530,7 @@ b(I')=
 \end{cases}
 $$
 
-### Base Street Tax`
+### Base Street Tax
 
 | Tag | Street Heat `I'` | Street Tax `τ(I')` |
 |---|---:|---:|
