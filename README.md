@@ -107,6 +107,15 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
 9) Participants earn **Envelope** rewards (MOB-α) weighted by **contribution + reputation**  
 10) The job becomes lore: **BOTCHED / MESSY / CLEAN / LEGENDARY**, ranks, Families, leaderboards
 
+Hit Status Lifecycle:
+
+| Status     | When it happens                                                               | What it means (1 sentence)                                                              | Can deposits change?                  |
+| ---------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------- |
+| **OPEN**   | Immediately after Boss posts the job                                          | Hit is in the **Heat Window** collecting target-alpha deposits.                         | **Yes** (Boss + Mobsters can deposit) |
+| **ARMED**  | After Heat Window ends **and** thresholds allow execution                     | Hit is **locked** and will execute **once** at a **random time** inside `E_min..E_max`. | **No** (inventory frozen)             |
+| **REFUND** | After Heat Window ends and `F < θ_refund` (or Boss-selected refund condition) | Hit is canceled: deposits return; Boss pays the cancel fee (if configured).             | **No**                                |
+| **CLOSED** | After the randomized execution + settlement completes                         | Hit is finished, and the full dossier (payouts/heat/tag/proof) is published.            | **No**                                |
+
 ---
 
 ## Quick Rules (The Money)
