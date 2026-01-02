@@ -101,11 +101,11 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
 5) If **ARMED**, the protocol executes **one batched sell** (“the hit”) at a **random time** inside an **Execution Window** (anti-gaming)
    - Earliest: **15 minutes** after arming
    - Latest: **7200 minutes (5 days)** after arming
-7) TAO proceeds split into: **Taofather Rake**, **Boss Kickback**, **Pool Payout**  
-8) Consiglieres compute **Street Heat** and publish the dossier  
-9) Boss MOB-α escrow is “washed” back (bounded), with a loss split **burn + blessing**  
-10) Participants earn **Envelope** rewards (MOB-α) weighted by **contribution + reputation**  
-11) The job becomes lore: **BOTCHED / MESSY / CLEAN / LEGENDARY**, ranks, Families, leaderboards
+6) TAO proceeds split into: **Taofather Rake**, **Boss Kickback**, **Pool Payout**  
+7) Consiglieres compute **Street Heat** and publish the dossier  
+8) Boss MOB-α escrow is “washed” back (bounded), with a loss split **burn + blessing**  
+9) Participants earn **Envelope** rewards (MOB-α) weighted by **contribution + reputation**  
+10) The job becomes lore: **BOTCHED / MESSY / CLEAN / LEGENDARY**, ranks, Families, leaderboards
 
 ---
 
@@ -205,9 +205,8 @@ $$
 F=\frac{Q_{filled}}{C}
 $$
 
-## Arming + Execution Window (Anti-Gaming)
-
 ### Phase B — Execution Window (Armed Phase)
+
 If the pool qualifies, it becomes **ARMED**:
 
 - **Inventory is frozen** (no deposits, no withdrawals)
