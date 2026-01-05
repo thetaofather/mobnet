@@ -116,6 +116,22 @@ Hit Status Lifecycle:
 | **REFUND** | After Heat Window ends and `F < θ_refund` (or Boss-selected refund condition) | Hit is canceled: deposits return; Boss pays the cancel fee (if configured).             | **No**                                |
 | **CLOSED** | After the randomized execution + settlement completes                         | Hit is finished, and the full dossier (payouts/heat/tag/proof) is published.            | **No**                                |
 
+```mermaid
+flowchart TD
+  A["BOSS POSTS A HIT"] --> B["OPEN (CREW FORMING)"]
+  B --> C["HEAT WINDOW"]
+  C --> D{"INVENTORY"}
+
+  D -->|Not enough| R["REFUND"]
+  D -->|Enough, not full| P["ARMED (PARTIAL)"]
+  D -->|Full| F["ARMED (FULL)"]
+
+  P --> X["THE HIT"]
+  F --> X
+
+  X --> S["SETTLEMENT"]
+  S --> Z["CLOSED (DOSSIER + TAG)"]
+```
 ---
 
 ## Quick Rules (The Money)
