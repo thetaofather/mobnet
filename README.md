@@ -101,7 +101,7 @@ The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs,
 5) If **ARMED**, the protocol executes **one batched sell** (“the hit”) at a **random time** inside an **Execution Window** (anti-gaming)
    - Earliest: **15 minutes** after arming
    - Latest: **7200 minutes (5 days)** after arming
-6) TAO proceeds split into: **Taofather Rake**, **Boss Kickback**, **Pool Payout**  
+6) TAO proceeds split into: **Taofather take**, **Boss Kickback**, **Pool Payout**  
 7) Consiglieres compute **Street Heat** and publish the dossier  
 8) Boss MOB-α escrow is “washed” back (bounded), with a loss split **burn + blessing**  
 9) Participants earn **Envelope** rewards (MOB-α) weighted by **contribution + reputation**  
@@ -150,7 +150,7 @@ When a hit executes, it produces:
 
 From `V_hit`, the protocol takes:
 
-- **Taofather Rake:** `t = 1.5%` (base; may increase slightly for underfilled execution)
+- **Taofather take:** `t = 1.5%` (base; may increase slightly for underfilled execution)
 - **Boss Kickback:** `b_eff(I', ρ)` (tag-based 1–3%, improved by Boss skin)
 - The rest goes to the **Pool Payout** pot (paid strictly pro-rata by target alpha)
 
@@ -159,7 +159,7 @@ From `V_hit`, the protocol takes:
 ## Roles
 
 ### The Taofather (Subnet Owner)
-Runs the city. Sets the street rules. Collects the rake.
+Runs the city. Sets the street rules. Collects the take.
 
 ### Boss (Hit Sponsor)
 Opens hits. Deposits MOB-α + real target alpha. Takes bounded wash risk on MOB-α. Earns kickback + TAO from their target alpha sale.
@@ -187,7 +187,7 @@ Compute Street Heat and Rep. Validate settlement math. Publish dossiers and lead
 - **The Blessing** — Taofather’s share of escrow loss  
 - **The Envelope** — MOB-α rewards paid to participants for running hits  
 - **BOTCHED / MESSY / CLEAN / LEGENDARY** — hit tags based on heat/quality  
-- **The Rake** — Taofather’s TAO cut from every hit (`1.5%` base)  
+- **The take** — Taofather’s TAO cut from every hit (`1.5%` base)  
 - **Kickback** — Boss bonus from TAO proceeds (tag-based, up to `3%`)
 
 ---
@@ -254,7 +254,7 @@ Until the hit has executed, the following details are **not shown publicly**:
 Once the hit executes, the dossier becomes public and includes:
 
 - Final inventory sold (`Q_filled`), participation breakdown, and proceeds `V_hit`
-- Rake, kickback, pool pot, and strict pro-rata TAO payouts
+- take, kickback, pool pot, and strict pro-rata TAO payouts
 - Street Heat `I'`, tag (BOTCHED/MESSY/CLEAN/LEGENDARY)
 - Any refund / underfill penalties applied to the Boss
 - The randomness proof / audit trail for `B_exec`
@@ -391,8 +391,8 @@ $$
 U=\text{clamp}\left(\frac{\theta_{full}-F}{\theta_{full}-\theta_{refund}},\;0,\;1\right)
 $$
 
-**Option 1 (recommended): Underfill rake bump (TAO-side, simple audit)**
-Let base rake be `t = 1.5%`. For underfilled execution:
+**Option 1 (recommended): Underfill take bump (TAO-side, simple audit)**
+Let base take be `t = 1.5%`. For underfilled execution:
 
 $$
 t_{eff}=t+\Delta t\cdot U
@@ -753,7 +753,7 @@ Total sold:
 ## Settlement (TAO) — **strict pro-rata by target alpha**
 
 **Proceeds:** `V_hit = 500 TAO`  
-**Taofather Rake (base 1.5%):** `7.5 TAO`
+**Taofather take (base 1.5%):** `7.5 TAO`
 
 **Street Heat:** `I' = 0.50` → Tag CLEAN
 
@@ -986,13 +986,13 @@ $$
 
 ## A4) TAO Settlement
 
-Taofather rake (base):
+Taofather take (base):
 
 $$
 V_{taofather}=t\cdot V_{hit}
 $$
 
-Underfilled execution rake (optional):
+Underfilled execution take (optional):
 
 $$
 t_{eff}=t+\Delta t\cdot U
@@ -1205,8 +1205,8 @@ Notes:
 
 #### Refund / Underfill fees (Boss-paid)
 - **Refund fee factor `f_cancel`:** (default `0.50%` of `A_boss`)  
-- **Underfilled execution rake bump:** `t_eff = t + Δt * U`  
-  - **Base rake `t`:** `1.5%`
+- **Underfilled execution take bump:** `t_eff = t + Δt * U`  
+  - **Base take `t`:** `1.5%`
   - **Max bump `Δt`:** (default `0.50%`)  
 - *(Optional)* **Underfill burn factor `f_under`:** (default `0.50%`, applied as `f_under * U * A_boss`)
 
@@ -1236,7 +1236,7 @@ Compute:
 
 ## 6) Settlement Defaults (Unless Protocol Overrides)
 
-- **Taofather base rake `t`:** `1.5%`
+- **Taofather base take `t`:** `1.5%`
 - **Boss kickback:** `b_eff(I', ρ)` (tag-based up to `3%`, skin-adjusted)
 - **Street Tax:** `τ_eff(I', ρ)` (tag-based, skin-discounted)
 - **Wash floor:** `β_min(ρ) = 0.80 + 0.10 * ρ_norm`
@@ -1256,7 +1256,7 @@ Compute:
 **Acknowledgements:**
 - Once **ARMED**, inventory is frozen and execution time is randomized within the Execution Window.
 - If the pool **REFUNDS**, Mobsters get deposits back and I (the Boss) pay the cancellation fee.
-- If the pool executes **NOT FULL**, I (the Boss) pay slightly higher fees (e.g., underfill rake bump / optional underfill burn).
+- If the pool executes **NOT FULL**, I (the Boss) pay slightly higher fees (e.g., underfill take bump / optional underfill burn).
 
 ---
 
