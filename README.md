@@ -293,7 +293,7 @@ Below is the same hit shown in two phases:
 **District:** San Taovanni — The Docks  
 
 **Reason (Boss Thesis):**  
-> “This subnet has shown repeated signs of thin liquidity and hype-driven pricing. The hit is intended to force faster price discovery and produce an auditable stress-test record.”
+> “This subnet has shown signs of being a scam as they continue to miss self-imposed deadlines, all while continuing to hype vaporware. This hit is intended to force the subnet owner's hand and show that the community will not tolerate these behaviors.”
 
 **Heat Window:** `T_fill = 2h 00m`  
 **Execution:** Executes at a **random time** within the **Execution Window** after arming *(exact time not disclosed)*
