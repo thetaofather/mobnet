@@ -4,7 +4,7 @@
 
 ## Intro
 
-Welcome to **San Taovanni** — a mob-run district inside Tensor City.
+Welcome to **San Taovanni**, a mob-run district inside Tensor City.
 
 **The Taofather** is a mob-themed Bittensor subnet where volatility becomes a public game: **Bosses** post hits, **Mobsters** form crews, and **Consiglieres** keep the books.
 
