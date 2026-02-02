@@ -8,7 +8,7 @@ Welcome to **San Taovanni**, a mob-run district inside Tensor City.
 
 The Family’s currency is **MOB-α** (“Mob Alpha”). Use it to sponsor jobs, earn envelopes, climb ranks, and build a reputation that lives on the **Job Board**.
 
-> **Important:** Any TAO-equivalent examples use a reference input `p_alpha` for accounting. It’s not a peg and not a guarantee — it’s just a “street price” input used to compare values in examples.
+> **Important:** Any TAO-equivalent examples use a reference input `p_alpha` for accounting. It’s not a peg and not a guarantee | it’s just a “street price” input used to compare values in examples.
 
 ---
 
