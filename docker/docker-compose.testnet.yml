@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  validator:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.validator
+    environment:
+      - NETWORK=test
+      - NETUID=9999
+      - ENVELOPE_ROOM_UID=0
+      - WALLET_NAME=default
+      - HOTKEY_NAME=default
+      - JOB_BOARD_URL=http://jobboard:8088
+      - DISPUTE_DELAY_BLOCKS=100
+      - CONSENSUS_STAKE_FRACTION=0.51
+    volumes:
+      - ../state:/app/state
+    depends_on:
+      - jobboard
+
+  # Local testing ONLY (keep private). This folder is gitignored.
+  jobboard:
+    image: python:3.11-slim
+    working_dir: /jobboard
+    volumes:
+      - ../private_backend:/jobboard
+      - ../private_state:/jobboard/private_state
+    command: bash -lc "pip install --no-cache-dir -r requirements.txt && python -m private_backend.app"
+    ports:
+      - "8088:8088"
