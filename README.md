@@ -93,5 +93,17 @@ This creates a subnet-controlled MOB-α pool used to pay envelopes.
 
 ---
 
-## DO NOT COMMIT
-- `private_backend/` is in `.gitignore` — keep it private.
+## Security (DO NOT COMMIT KEYS)
+
+This repo intentionally ignores sensitive material (wallets, hotkeys, mnemonics, `.env` files, logs).
+Never commit or upload anything under:
+- `.bittensor/`
+- `wallets/`
+- `hotkeys/`
+- `.env*`
+
+Review `.gitignore` before pushing. If you accidentally committed a secret, rotate it immediately.
+
+Sanity check before pushing:
+- `git status`
+- `git grep -n "mnemonic\|seed\|hotkey\|coldkey" -I .`
