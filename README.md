@@ -1,6 +1,6 @@
-# Taofather / MOBnet Subnet (Testnet Scaffold)
+# Taofather / MOBnet Subnet (Testnet)
 
-This repo is a **testnet-ready scaffold** for the Taofather subnet:
+This repo is a **testnet-ready ** for the Taofather subnet:
 
 - **Validator redirects 100% of miner emissions** to a designated UID (the **Envelope Room**) via `set_weights()`.
 - **Job system** for **Hits** (sell → TAO payouts) and **Rackets** (buy/stake → target-alpha credits + MOB-α envelopes).
@@ -8,7 +8,7 @@ This repo is a **testnet-ready scaffold** for the Taofather subnet:
 
 > ⚠️ **Security note**  
 > A minimal **private boss-submission job board** is included under `private_backend/` so you can test end-to-end,
-> but it is **gitignored** by default. Keep it private or move it to a separate private repo.
+> but it is **gitignored** by default. 
 
 ---
 
