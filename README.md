@@ -1,4 +1,4 @@
-# Turning dTAO Volatility into Mob Hits (and Rackets)
+# Turning dTAO Volatility into Mob Hits and Rackets
 
 ![Taofather Banner](https://github.com/user-attachments/assets/1009e9db-96c9-4279-ace3-6544629842d3)
 
